@@ -1,9 +1,10 @@
 import "./globals.css";
 import { Edu_SA_Beginner } from "next/font/google";
-import { AOSInit } from "./helpers/aos";
+import { AOSInit } from "../helpers/aos";
 
 const edu_sa_beginner = Edu_SA_Beginner({
-  weight: "400",
+  weight: "700",
+  formats: ["woff2"],
   subsets: ["latin"],
 });
 
