@@ -9,6 +9,9 @@ import CoffeeOutlinedIcon from "@mui/icons-material/CoffeeOutlined";
 import LocalBarOutlinedIcon from "@mui/icons-material/LocalBarOutlined";
 import WineBarOutlinedIcon from "@mui/icons-material/WineBarOutlined";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
+import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
+import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 export default function Home() {
   const [showCoffees, setShowCoffees] = useState(false);
@@ -66,7 +69,12 @@ export default function Home() {
             className="flex flex-row justify-between items-center w-full rounded-xl shadow-xl p-3"
             style={{ backgroundColor: "#ef9336" }}>
             <h3 className="font-bold text-left text-2xl text-white">
-              {"Coffee"}
+              {showCoffees ? (
+                <RemoveCircleOutlineRoundedIcon />
+              ) : (
+                <AddCircleOutlineRoundedIcon />
+              )}{" "}
+              Coffee
             </h3>
             <CoffeeOutlinedIcon style={{ color: "white", fontSize: "42px" }} />
           </div>
@@ -77,14 +85,17 @@ export default function Home() {
               data-aos="fade-down"
               data-aos-duration="300">
               {data.map((drink) => (
-                <div className="flex flex-col items-center justify-start w-full">
+                <div className="flex flex-col items-center  justify-start w-full">
                   <div className="flex flex-row items-center justify-between w-full pr-6 pl-6 pt-3 pb-3">
-                    <h4 className="text-lg  text-center text-white">
+                    <h4 className="text-xl  text-left text-white">
                       {drink.name}
                     </h4>
-                    <p className="text-lg text-center text-white">
+                    <p className="text-lg text-right text-white">
                       {drink.price}
                     </p>
+                    <ShoppingCartOutlinedIcon
+                      style={{ color: "white", fontSize: "30px" }}
+                    />
                   </div>
                 </div>
               ))}
@@ -97,6 +108,11 @@ export default function Home() {
             className="flex flex-row justify-between items-center w-full rounded-xl shadow-xl p-3"
             style={{ backgroundColor: "#ef9336" }}>
             <h3 className="font-bold text-left text-2xl text-white">
+              {showSmoothies ? (
+                <RemoveCircleOutlineRoundedIcon />
+              ) : (
+                <AddCircleOutlineRoundedIcon />
+              )}{" "}
               {"Smoothies"}
             </h3>
             <LocalBarOutlinedIcon
@@ -124,12 +140,19 @@ export default function Home() {
             </div>
           )}
         </div>
-        <div className="flex flex-col items-center justify-center w-full p-2">
+        <div
+          className="flex flex-col items-center justify-center w-full p-2"
+          style={{ marginBottom: "74px" }}>
           <div
             onClick={() => setShowJuices(!showJuices)}
             className="flex flex-row justify-between items-center w-full rounded-xl shadow-xl p-3"
             style={{ backgroundColor: "#ef9336" }}>
             <h3 className="font-bold text-left text-2xl text-white">
+              {showJuices ? (
+                <RemoveCircleOutlineRoundedIcon />
+              ) : (
+                <AddCircleOutlineRoundedIcon />
+              )}{" "}
               {"Juices"}
             </h3>
             <WineBarOutlinedIcon style={{ color: "white", fontSize: "42px" }} />
@@ -156,35 +179,37 @@ export default function Home() {
           )}
         </div>
       </main>
-      <Box
-        sx={{
-          width: "100%",
-          position: "fixed", // Use 'fixed' instead of 'absolut'
-          bottom: 0, // Stick it to the bottom of the screen
-        }}>
-        <BottomNavigation
-          style={{
-            backgroundColor: "transparent",
-            margin: "10px",
-
-          }}
-          showLabels
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
+      <center>
+        <Box
+          sx={{
+            position: "fixed", // Use 'fixed' instead of 'absolut'
+            bottom: 0, // Stick it to the bottom of the screen
+            width: "100%", // Full width
           }}>
-          <BottomNavigationAction
-          className="shadow-xl"
+          <BottomNavigation
             style={{
-              width: "calc(100% - 10px)",
-              borderRadius: "60px",
-              backgroundColor: "white",
-              color: "#ef9336",
+              // backgroundColor: "transparent",
+              margin: "10px",
+              width: "60px",
+              backgroundColor: "transparent", // Transparent background
             }}
-            icon={<LocalMallOutlinedIcon style={{ fontSize: "42px" }} />}
-          />
-        </BottomNavigation>
-      </Box>
+            showLabels
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}>
+            <BottomNavigationAction
+              className="shadow-xl"
+              style={{
+                borderRadius: "60px",
+                backgroundColor: "white",
+                color: "#ef9336",
+              }}
+              icon={<LocalMallOutlinedIcon style={{ fontSize: "42px" }} />}
+            />
+          </BottomNavigation>
+        </Box>
+      </center>
     </div>
   );
 }
