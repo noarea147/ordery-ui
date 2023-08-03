@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 import CoffeeOutlinedIcon from "@mui/icons-material/CoffeeOutlined";
 import LocalBarOutlinedIcon from "@mui/icons-material/LocalBarOutlined";
@@ -69,7 +69,7 @@ export default function Menu(props) {
                     </p>
                   ))}
 
-                <AddToCard />
+                <AddToCard productData={drink} />
               </div>
             </div>
           ))}

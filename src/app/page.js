@@ -1,15 +1,10 @@
 "use client";
-import React, { useState } from "react";
+
 import Image from "next/image";
-import Head from "next/head";
 import Menu from "../components/menu";
 import Cart from "@/components/cart";
 
-
 export default function Home() {
-  const [value, setValue] = useState(0);
-  const [showModal, setShowModal] = useState(false);
-
   const data = [
     {
       _id: "64c7bfd29b39e0928005ccfe",
@@ -132,16 +127,6 @@ export default function Home() {
         className="flex min-h-screen flex-col items-center justify-start"
         data-aos="fade-up"
         data-aos-duration="500">
-        <Head>
-          <title>Coffee name</title>
-          <meta charset="UTF-8"></meta>
-          <meta name="description" content="Coffee description" />
-          <link rel="icon" href="/favicon.ico" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-          />
-        </Head>
         <div className="flex flex-col items-center justify-center w-full mt-10 mb-10">
           <Image
             src="/next.svg"
@@ -180,7 +165,6 @@ export default function Home() {
             />
           )
         )}
-
       </main>
       <Cart />
     </div>
