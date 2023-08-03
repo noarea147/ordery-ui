@@ -1,10 +1,16 @@
 "use client";
-
+import React, { useState } from "react";
 import Image from "next/image";
 import Menu from "../components/menu";
-import Cart from "@/components/cart";
+import FloatingCart from "@/components/floatingCart";
+import Modal from "@/components/modal";
 
 export default function Home() {
+  const [modal, setModal] = useState(false);
+  const checkModal = () => {
+    console.log("clicked");
+    setModal(!modal);
+  };
   const data = [
     {
       _id: "64c7bfd29b39e0928005ccfe",
@@ -166,7 +172,12 @@ export default function Home() {
           )
         )}
       </main>
-      <Cart />
+      <footer
+        className="flex flex-col items-center justify-center w-full h-24 border-t"
+        onClick={() => checkModal()}>
+        <FloatingCart />
+      </footer>
+      <Modal show={modal} />
     </div>
   );
 }

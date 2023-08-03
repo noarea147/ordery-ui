@@ -2,26 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 import Lottie from "lottie-react";
 import addToCard from "../animations/addToCard.json";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
+import { useCart } from "../context/CartContext";
 
 export default function AddToCard(props) {
+  const { cartDispatch } = useCart();
   const addToCardAnimation = useRef();
   const [animateIcon, setAnimateIcon] = useState(false);
+  const handleAddToCart = (product) => {
+    cartDispatch({ type: "ADD_TO_CART", payload: product });
+  };
 
-  const startAnimation = () => {
-    let cartProducts = localStorage.getItem("cartProducts");
-    if (cartProducts) {
-      cartProducts = JSON.parse(cartProducts);
-      if (Array.isArray(cartProducts)) {
-        cartProducts = [...cartProducts, props.productData];
-      } else {
-        cartProducts = [cartProducts, props.productData];
-      }
-      localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
-    } else {
-      localStorage.setItem("cartProducts", JSON.stringify([props.productData]));
-    }
-    
-    console.log(cartProducts);
+  const handleRemoveFromCart = () => {
+    cartDispatch({ type: "REMOVE_FROM_CART", payload: product.id });
+  };
+
+  const startAnimation = (product) => {
+    handleAddToCart(product);
     setAnimateIcon(!animateIcon);
     setTimeout(() => {
       setAnimateIcon(false);
@@ -42,7 +38,7 @@ export default function AddToCard(props) {
           style={{
             width: "27px",
             height: "27px",
-            cursor: "pointer", 
+            cursor: "pointer",
             color: "white",
           }}
         />
@@ -52,7 +48,7 @@ export default function AddToCard(props) {
           data-aos-duration="1000"
           data-aos-mirror="true"
           data-aos-easing="ease-in-out"
-          onClick={() => startAnimation()}
+          onClick={() => startAnimation(props.productData)}
           style={{
             color: "white",
             fontSize: "25px",

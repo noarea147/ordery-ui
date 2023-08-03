@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Modal(props) {
+  const [showModal, setShowModal] = useState(false);
+  useEffect(() => {
+    setShowModal(props.show);
+  }, [props.show]);
+
   return (
     <>
-      {props.show ? (
+      {showModal ? (
         <>
           <div
             data-aos="fade-up"
@@ -27,11 +32,7 @@ export default function Modal(props) {
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
                   <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                    I always felt like I could do anything. That’s the main
-                    thing people are controlled by! Thoughts- their perception
-                    of themselves! They're slowed down by their perception of
-                    themselves. If you're taught you can’t do anything, you
-                    won’t do anything. I was taught I could do everything.
+                    {JSON.stringify(props?.data)}
                   </p>
                 </div>
                 {/*footer*/}
