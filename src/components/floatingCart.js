@@ -9,7 +9,7 @@ export default function FloatingCart() {
   const { products } = cartState;
   const [items, setItems] = useState(0);
   useEffect(() => {
-    setItems(products.length);
+    setItems(products?.length);
   }, [products]);
   return (
     <center

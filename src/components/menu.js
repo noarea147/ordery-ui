@@ -72,7 +72,7 @@ export default function Menu(props) {
               className="flex flex-col items-center  justify-start w-full"
               key={index}>
               <div className="flex flex-row items-center justify-between w-full pr-6 pl-6 pt-3 pb-3">
-                <h4 className="text-xl  text-left text-white">{drink.Name}</h4>
+                <h4 className="text-xl  text-left text-white">{drink.name}</h4>
                 {drink.prices?.length >= 1 &&
                   drink.prices.map((variable, index) => (
                     <p key={index} className="text-lg text-right text-white">

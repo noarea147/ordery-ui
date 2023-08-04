@@ -10,23 +10,22 @@ export default function Home() {
   const { getBusinessMenu } = useMenuContext();
   const [modal, setModal] = useState(false);
   const checkModal = () => {
-    console.log("clicked");
     setModal(!modal);
   };
-  const getMenus = async () => {
-    const response = await getBusinessMenu({
-      menuId: "64cae9bd9647ab96277288d4",
-    });
-    console.log(response);
-  };
+  // const getMenus = async () => {
+  //   const response = await getBusinessMenu({
+  //     menuId: "64cae9bd9647ab96277288d4",
+  //   });
+  //   console.log(response);
+  // };
   const data = [
     {
       _id: "64c7bfd29b39e0928005ccfe",
-      MenuName: "my 1 menu",
+      Menuname: "my 1 menu",
       description: "my 1 menu description",
       products: [
         {
-          Name: "expresso",
+          name: "expresso",
           description: "coffee description",
           prices: [
             {
@@ -36,7 +35,7 @@ export default function Home() {
           ],
         },
         {
-          Name: "cappuccino",
+          name: "cappuccino",
           description: "description",
           prices: [
             {
@@ -46,7 +45,7 @@ export default function Home() {
           ],
         },
         {
-          Name: "maricana",
+          name: "maricana",
           description: "my 1 menu description",
           prices: [
             {
@@ -56,7 +55,7 @@ export default function Home() {
           ],
         },
         {
-          Name: "latte",
+          name: "latte",
           description: "my 1 menu description",
           prices: [
             {
@@ -66,7 +65,7 @@ export default function Home() {
           ],
         },
         {
-          Name: "americano",
+          name: "americano",
           description: "my 1 menu description",
           prices: [
             {
@@ -80,11 +79,11 @@ export default function Home() {
     },
     {
       _id: "64c7bfd29b39e0928005ccfe",
-      MenuName: "my 1 menu",
+      Menuname: "my 1 menu",
       description: "my 1 menu description",
       products: [
         {
-          Name: "cold ice smoothie",
+          name: "cold ice smoothie",
           description: "coffee description",
           prices: [
             {
@@ -94,7 +93,7 @@ export default function Home() {
           ],
         },
         {
-          Name: "beach smoothie",
+          name: "beach smoothie",
           description: "description",
           prices: [
             {
@@ -104,7 +103,7 @@ export default function Home() {
           ],
         },
         {
-          Name: "red hot smoothie",
+          name: "red hot smoothie",
           description: "my 1 menu description",
           prices: [
             {
@@ -118,11 +117,11 @@ export default function Home() {
     },
     {
       _id: "64c7bfd29b39e0928005ccfe",
-      MenuName: "my 1 menu",
+      Menuname: "my 1 menu",
       description: "my 1 menu description",
       products: [
         {
-          Name: "expresso",
+          name: "expresso",
           description: "coffee description",
           prices: [
             {
@@ -132,7 +131,7 @@ export default function Home() {
           ],
         },
         {
-          Name: "cappuccino",
+          name: "cappuccino",
           description: "description",
           prices: [
             {
@@ -142,7 +141,7 @@ export default function Home() {
           ],
         },
         {
-          Name: "maricana",
+          name: "maricana",
           description: "my 1 menu description",
           prices: [
             {
@@ -155,7 +154,7 @@ export default function Home() {
       category: "juice",
     },
   ];
-  getMenus();
+  // getMenus();
   return (
     <div>
       <main

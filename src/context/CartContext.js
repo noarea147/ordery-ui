@@ -18,19 +18,8 @@ const cartReducer = (state, action) => {
       );
       return { ...state, products: [...state.products, action.payload] };
     case "REMOVE_FROM_CART":
-      localStorage.setItem(
-        "cartProducts",
-        JSON.stringify([
-          ...state.products.filter(
-            (product) => product.name !== action.payload
-          ),
-        ])
-      );
       return {
-        ...state,
-        products: state.products.filter(
-          (product) => product.name !== action.payload
-        ),
+        products: JSON.parse(localStorage.getItem("cartProducts")),
       };
 
     case "CLEAR_CART":
