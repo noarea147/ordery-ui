@@ -6,14 +6,13 @@ import emptyCart from "../animations/emptyCart.json";
 import orderPlaced from "../animations/orderPlaced.json";
 
 export default function Modal(props) {
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const [total, setTotal] = useState(0);
   const [update, setUpdate] = useState(false);
   const [orderStatus, setOrderStatus] = useState("shopping");
-
   const [cartProducts, setcartProducts] = useState([]);
   const { cartDispatch, cartState } = useCart();
-  const { products } = cartState;
+  const { products, cart } = cartState;
 
   useEffect(() => {
     let cartProducts = localStorage.getItem("cartProducts");
@@ -29,7 +28,7 @@ export default function Modal(props) {
       const counts = arr?.reduce((acc, curr) => {
         const name = curr.name;
         const price = curr.prices[0].price;
-        acc[name] = acc[name] || { name, count: 0, price }; 
+        acc[name] = acc[name] || { name, count: 0, price };
         acc[name].count++;
         return acc;
       }, {});
@@ -42,10 +41,9 @@ export default function Modal(props) {
       return countPerElement;
     }
     orderTotal();
-    setShowModal(props.show);
     cartProducts && removeDuplicatesAndGetCounts(cartProducts);
-    console.log("cartState", cartState);
-  }, [props.show, update]);
+    // setShowModal(cart);
+  }, [cart, update]);
   const handleRemoveFromCart = (name) => {
     const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
 
@@ -62,7 +60,7 @@ export default function Modal(props) {
 
   return (
     <>
-      {showModal ? (
+      {cart ? (
         <>
           <div
             data-aos="fade-up"
@@ -180,14 +178,13 @@ export default function Modal(props) {
                   <button
                     className="text-red-400 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)}>
+                    onClick={() => cartDispatch({ type: "TOGGLE_CART" })}>
                     Go Back
                   </button>
                   {products.length !== 0 && (
                     <button
                       className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                      type="button"
-                      onClick={() => setShowModal(false)}>
+                      type="button">
                       place order
                     </button>
                   )}

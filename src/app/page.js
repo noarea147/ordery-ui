@@ -5,13 +5,14 @@ import Menu from "../components/menu";
 import FloatingCart from "@/components/floatingCart";
 import Modal from "@/components/modal";
 import { useMenuContext } from "@/context/MenuContext";
+import { useCart } from "@/context/CartContext";
 
 export default function Home() {
   const { getBusinessMenu } = useMenuContext();
   const [modal, setModal] = useState(false);
-  const checkModal = () => {
-    setModal(!modal);
-  };
+  const { cartDispatch, cartState } = useCart();
+  const { cart } = cartState;
+
   // const getMenus = async () => {
   //   const response = await getBusinessMenu({
   //     menuId: "64cae9bd9647ab96277288d4",
@@ -202,10 +203,10 @@ export default function Home() {
       </main>
       <footer
         className="flex flex-col items-center justify-center w-full h-24 border-t"
-        onClick={() => checkModal()}>
+        onClick={() => cartDispatch({ type: "TOGGLE_CART" })}>
         <FloatingCart />
       </footer>
-      <Modal show={modal} />
+      <Modal />
     </div>
   );
 }
