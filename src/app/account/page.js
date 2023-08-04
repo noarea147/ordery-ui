@@ -10,11 +10,7 @@ export default function Account() {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <img
-                  className="h-8 w-8"
-                  src="vercel.svg"
-                  alt="Your Company"
-                />
+                <img className="h-8 w-8" src="vercel.svg" alt="Your Company" />
               </div>
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-4">
@@ -218,7 +214,22 @@ export default function Account() {
       </header>
       <main>
         <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-          {/* Your content */}
+          <button
+            className="
+            bg-blue-500
+            hover:bg-blue-700
+            text-white
+            py-2
+            px-4
+            rounded-full
+            focus:outline-none
+            focus:shadow-outline
+            "
+            type="button
+            
+          ">
+            Add Menu
+          </button>
         </div>
       </main>
     </div>
