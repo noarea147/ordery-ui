@@ -1,12 +1,11 @@
 import "./globals.css";
-import { Edu_SA_Beginner } from "next/font/google";
+import { Bree_Serif } from "next/font/google";
 import { AOSInit } from "../helpers/aos";
 import { CartProvider } from "../context/CartContext";
 import MenuProvider from "../context/MenuContext";
 
-const edu_sa_beginner = Edu_SA_Beginner({
-  weight: "700",
-  formats: ["woff2"],
+const pacifico = Bree_Serif({
+  weight: "400",
   subsets: ["latin"],
 });
 
@@ -21,7 +20,7 @@ export default function RootLayout({ children }) {
       <AOSInit />
       <CartProvider>
         <MenuProvider>
-          <body className={edu_sa_beginner.className}>{children}</body>
+          <body className={pacifico.className}>{children}</body>
         </MenuProvider>
       </CartProvider>
     </html>

@@ -47,7 +47,7 @@ export default function Menu(props) {
         onClick={() => setShow(!show)}
         className="flex flex-row justify-between items-center w-full rounded-xl shadow-xl p-3"
         style={{ backgroundColor: "#ef9336" }}>
-        <h3 className="font-bold text-left text-2xl text-white">
+        <h3 className=" text-left text-2xl text-white">
           {show ? (
             <RemoveCircleOutlineRoundedIcon />
           ) : (
