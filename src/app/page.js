@@ -5,13 +5,10 @@ import Menu from "../components/menu";
 import FloatingCart from "@/components/floatingCart";
 import Modal from "@/components/modal";
 import { useMenuContext } from "@/context/MenuContext";
-import { useCart } from "@/context/CartContext";
 
 export default function Home() {
   const { getBusinessMenu } = useMenuContext();
-  const [modal, setModal] = useState(false);
   const { cartDispatch, cartState } = useCart();
-  const { cart } = cartState;
 
   // const getMenus = async () => {
   //   const response = await getBusinessMenu({
