@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 
 // Initial cart state
-
 const initialCartState = {
   products: localStorage.getItem("cartProducts")
     ? JSON.parse(localStorage.getItem("cartProducts"))
@@ -19,12 +18,21 @@ const cartReducer = (state, action) => {
       );
       return { ...state, products: [...state.products, action.payload] };
     case "REMOVE_FROM_CART":
+      localStorage.setItem(
+        "cartProducts",
+        JSON.stringify([
+          ...state.products.filter(
+            (product) => product.name !== action.payload
+          ),
+        ])
+      );
       return {
         ...state,
         products: state.products.filter(
-          (product) => product.id !== action.payload
+          (product) => product.name !== action.payload
         ),
       };
+
     case "CLEAR_CART":
       return { ...state, products: [] };
     default:

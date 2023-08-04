@@ -4,12 +4,20 @@ import Image from "next/image";
 import Menu from "../components/menu";
 import FloatingCart from "@/components/floatingCart";
 import Modal from "@/components/modal";
+import { useMenuContext } from "@/context/MenuContext";
 
 export default function Home() {
+  const { getBusinessMenu } = useMenuContext();
   const [modal, setModal] = useState(false);
   const checkModal = () => {
     console.log("clicked");
     setModal(!modal);
+  };
+  const getMenus = async () => {
+    const response = await getBusinessMenu({
+      menuId: "64cae9bd9647ab96277288d4",
+    });
+    console.log(response);
   };
   const data = [
     {
@@ -47,6 +55,26 @@ export default function Home() {
             },
           ],
         },
+        {
+          Name: "latte",
+          description: "my 1 menu description",
+          prices: [
+            {
+              size: "standard",
+              price: 9,
+            },
+          ],
+        },
+        {
+          Name: "americano",
+          description: "my 1 menu description",
+          prices: [
+            {
+              size: "standard",
+              price: 9,
+            },
+          ],
+        },
       ],
       category: "coffee",
     },
@@ -56,32 +84,32 @@ export default function Home() {
       description: "my 1 menu description",
       products: [
         {
-          Name: "expresso",
+          Name: "cold ice smoothie",
           description: "coffee description",
           prices: [
             {
               size: "standard",
-              price: 5,
+              price: 15,
             },
           ],
         },
         {
-          Name: "cappuccino",
+          Name: "beach smoothie",
           description: "description",
           prices: [
             {
               size: "standard",
-              price: 7,
+              price: 17,
             },
           ],
         },
         {
-          Name: "maricana",
+          Name: "red hot smoothie",
           description: "my 1 menu description",
           prices: [
             {
               size: "standard",
-              price: 9,
+              price: 19,
             },
           ],
         },
@@ -127,6 +155,7 @@ export default function Home() {
       category: "juice",
     },
   ];
+  getMenus();
   return (
     <div>
       <main

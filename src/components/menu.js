@@ -5,9 +5,20 @@ import LocalBarOutlinedIcon from "@mui/icons-material/LocalBarOutlined";
 import WineBarOutlinedIcon from "@mui/icons-material/WineBarOutlined";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
-import AddToCard from "./addToCard";
+import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
+import { useCart } from "../context/CartContext";
+
 export default function Menu(props) {
   const [show, setShow] = useState(false);
+  const { cartDispatch } = useCart();
+
+  const handleAddToCart = (product) => {
+    cartDispatch({ type: "ADD_TO_CART", payload: product });
+  };
+
+  const handleRemoveFromCart = () => {
+    cartDispatch({ type: "REMOVE_FROM_CART", payload: product.id });
+  };
 
   const iconComponent = (name) => {
     switch (name) {
@@ -69,7 +80,19 @@ export default function Menu(props) {
                     </p>
                   ))}
 
-                <AddToCard productData={drink} />
+                <AddCircleOutlinedIcon
+                  data-aos="fade-in"
+                  data-aos-duration="1000"
+                  data-aos-mirror="true"
+                  data-aos-easing="ease-in-out"
+                  onClick={() => handleAddToCart(drink)}
+                  style={{
+                    color: "white",
+                    fontSize: "25px",
+                    zIndex: 20,
+                    cursor: "pointer", // Add this style to allow click through
+                  }}
+                />
               </div>
             </div>
           ))}
