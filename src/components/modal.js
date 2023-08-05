@@ -66,129 +66,140 @@ export default function Modal(props) {
             data-aos="fade-up"
             data-ease-in="ease-in-out"
             data-aos-duration="500"
-            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none m-4 rounded-xl">
-            <div className="relative w-full my-6 mx-auto max-w-full">
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none ">
-                {orderStatus === "placed" ? (
-                  <div className="justify-center items-center flex-row">
-                    <div className="relative p-6 flex-auto">
-                      <div className="flex-col items-center justify-center pt-5 rounded-t w-full">
-                        <div className="flex items-center justify-center">
-                          <Lottie
-                            animationData={orderPlaced}
-                            loop={false}
-                            style={{ width: "200px", height: "200px" }}
-                          />
-                          <br />
-                        </div>
-                        <div className="flex items-center justify-center">
-                          <h3 className="text-3xl font-semibold">
-                            your order has been placed
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : orderPlaced === "error" ? (
-                  <div className="justify-center items-center flex-row">
-                    <div className="relative p-6 flex-auto">
-                      <div className="flex-col items-center justify-center pt-5 rounded-t w-full">
-                        <div className="flex items-center justify-center">
-                          <Lottie
-                            animationData={orderPlaced}
-                            loop={false}
-                            style={{ width: "200px", height: "200px" }}
-                          />
-                          <br />
-                        </div>
-                        <div className="flex items-center justify-center">
-                          <h3 className="text-3xl font-semibold">
-                            error while placing your order
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
-                {products.length === 0 ? (
-                  <div className="justify-center items-center flex-row">
-                    <div className="relative p-6 flex-auto">
-                      <div className="flex-col items-center justify-center pt-5 rounded-t w-full">
-                        <div className="flex items-center justify-center">
-                          <Lottie
-                            style={{ width: "150px", height: "150px" }}
-                            animationData={emptyCart}
-                            loop={false}
-                          />
-                          <br />
-                        </div>
-                        <div className="flex items-center justify-center">
-                          <h3 className="text-3xl font-semibold">
-                            your cart is empty
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
+            className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none m-4">
+            <div className="relative w-full max-w-full mx-auto my-6 bg-white shadow-lg rounded-xl p-6 h-[56vh] overflow-y-auto">
+              {/* <div className="border-0   relative flex flex-col w-full bg-white outline-none focus:outline-none "> */}
+              {orderStatus === "placed" ? (
+                <div className="justify-center items-center flex-row">
                   <div className="relative p-6 flex-auto">
-                    <div className="flex items-start justify-between pt-5  rounded-t ">
-                      <h3 className="text-3xl font-semibold">order summary</h3>
-                    </div>
-                    <div className="my-4 text-slate-500 text-lg leading-relaxed ">
-                      <div className="flex flex-row justify-between items-center">
-                        <p>product</p>
-                        <p>Qte</p>
-                        <p>price</p>
-                        <p>-</p>
+                    <div className="flex-col items-center justify-center pt-5 rounded-t w-full">
+                      <div className="flex items-center justify-center">
+                        <Lottie
+                          animationData={orderPlaced}
+                          loop={false}
+                          style={{ width: "200px", height: "200px" }}
+                        />
+                        <br />
                       </div>
-                      {cartProducts?.map((product, index) => (
-                        <div
-                          key={index}
-                          className="aos-all
-                      
-                      flex flex-row justify-between items-center
-                      
-                      ">
-                          <p className="flex flex-col">
-                            {product.product.name}{" "}
-                            <small style={{ marginTop: "0px" }}>standard</small>
-                          </p>
-                          <p>{product.product.count}</p>
-                          <p>
-                            {product.product.price * product.product.count} dt
-                          </p>
-                          <p
-                            onClick={() =>
-                              handleRemoveFromCart(product.product.name)
-                            }>
-                            <RemoveCircleIcon />
-                          </p>
-                        </div>
-                      ))}
-                      <div className="flex flex-row justify-between items-center mt-5">
-                        <p>total : {total} dt</p>
-                        <p></p>
-                        <p></p>
+                      <div className="flex items-center justify-center">
+                        <h3 className="text-3xl font-semibold">
+                          your order has been placed
+                        </h3>
                       </div>
                     </div>
                   </div>
-                )}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                  <button
-                    className="text-red-400 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => cartDispatch({ type: "TOGGLE_CART" })}>
-                    Go Back
-                  </button>
-                  {products.length !== 0 && (
-                    <button
-                      className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                      type="button">
-                      place order
-                    </button>
-                  )}
                 </div>
+              ) : orderPlaced === "error" ? (
+                <div className="justify-center items-center flex-row">
+                  <div className="relative p-6 flex-auto">
+                    <div className="flex-col items-center justify-center pt-5 rounded-t w-full">
+                      <div className="flex items-center justify-center">
+                        <Lottie
+                          animationData={orderPlaced}
+                          loop={false}
+                          style={{ width: "200px", height: "200px" }}
+                        />
+                        <br />
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <h3 className="text-3xl font-semibold">
+                          error while placing your order
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+              {products.length === 0 ? (
+                <div className="justify-center items-center flex-row">
+                  <div className="relative p-6 flex-auto">
+                    <div className="flex-col items-center justify-center pt-5 rounded-t w-full">
+                      <div className="flex items-center justify-center">
+                        <Lottie
+                          style={{ width: "150px", height: "150px" }}
+                          animationData={emptyCart}
+                          loop={false}
+                        />
+                        <br />
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <h3 className="text-3xl font-semibold">
+                          your cart is empty
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="relative p-6 flex-auto ">
+                  <div className="flex items-start justify-between pt-5 rounded-t">
+                    <h3 className="text-3xl font-semibold text-[#e2974b]">
+                      Order Summary
+                    </h3>
+                  </div>
+                  <div className="my-4 text-slate-500 text-lg leading-relaxed">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="text-left">
+                          <th className="py-2">Product</th>
+                          <th className="py-2">Qty</th>
+                          <th className="py-2">Price</th>
+                          <th className="py-2">-</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {cartProducts?.map((product, index) => (
+                          <tr key={index} className="aos-all">
+                            <td
+                              className="flex flex-col py-2 "
+                              style={{ wordBreak: "break-word" }}>
+                              {product.product.name}{" "}
+                              <small style={{ marginTop: "0px" }}>
+                                standard
+                              </small>
+                            </td>
+                            <td className="py-2">{product.product.count}</td>
+                            <td className="py-2">
+                              {product.product.price * product.product.count} dt
+                            </td>
+                            <td
+                              className="py-2"
+                              onClick={() =>
+                                handleRemoveFromCart(product.product.name)
+                              }>
+                              <RemoveCircleIcon />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td colSpan="2" className="py-2">
+                            Total:
+                          </td>
+                          <td colSpan="2" className="py-2">
+                            {total} dt
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              )}
+              <div className="flex items-center justify-end p-3 rounded-b">
+                <button
+                  className="text-gray-400 background-transparent px-6 py-2 t outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  type="button"
+                  onClick={() => cartDispatch({ type: "TOGGLE_CART" })}>
+                  Go Back
+                </button>
+                {products.length !== 0 && (
+                  <button
+                    className="text-white bg-[#2f4a77]	 font-bold  px-6 py-3 rounded-xl shadow-xl outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button">
+                    place order
+                  </button>
+                )}
               </div>
             </div>
           </div>

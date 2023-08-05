@@ -16,10 +16,6 @@ export default function Menu(props) {
     cartDispatch({ type: "ADD_TO_CART", payload: product });
   };
 
-  const handleRemoveFromCart = () => {
-    cartDispatch({ type: "REMOVE_FROM_CART", payload: product.id });
-  };
-
   const iconComponent = (name) => {
     switch (name) {
       case "coffee":
@@ -59,7 +55,7 @@ export default function Menu(props) {
       </div>
       {show && (
         <div
-          className="flex flex-col items-center justify-start w-full pt-3 rounded-b-xl"
+          className="flex flex-col  w-full pt-3 rounded-b-xl leading-relaxed"
           style={{
             backgroundColor: "#ef9336",
             marginTop: "-10px",
@@ -67,35 +63,47 @@ export default function Menu(props) {
           }}
           data-aos="fade-down"
           data-aos-duration="300">
-          {props.data.map((drink, index) => (
-            <div
-              className="flex flex-col items-center  justify-start w-full"
-              key={index}>
-              <div className="flex flex-row items-center justify-between w-full pr-6 pl-6 pt-3 pb-3">
-                <h4 className="text-xl  text-left text-white">{drink.name}</h4>
-                {drink.prices?.length >= 1 &&
-                  drink.prices.map((variable, index) => (
-                    <p key={index} className="text-lg text-right text-white">
-                      {variable.price} dt
-                    </p>
-                  ))}
+          <table className="w-full">
+            <tbody>
+              {props.data.map((drink, index) => (
+                <tr key={index}>
+                  <td
+                    width={"70%"}
+                    className="text-xl text-white py-3 pl-6"
+                    style={{ wordBreak: "break-word" }}>
+                    {drink.name}
+                  </td>
 
-                <AddCircleOutlinedIcon
-                  data-aos="fade-in"
-                  data-aos-duration="1000"
-                  data-aos-mirror="true"
-                  data-aos-easing="ease-in-out"
-                  onClick={() => handleAddToCart(drink)}
-                  style={{
-                    color: "white",
-                    fontSize: "25px",
-                    zIndex: 20,
-                    cursor: "pointer", // Add this style to allow click through
-                  }}
-                />
-              </div>
-            </div>
-          ))}
+                  {drink.prices?.length >= 1 &&
+                    drink.prices.map((variable, index) => (
+                      <td
+                        width={"20%"}
+                        key={index}
+                        className="text-lg text-center text-white py-3 whitespace-normal ">
+                        {variable.price} dt
+                      </td>
+                    ))}
+                  <td className="pl-6 pr-6 py-3">
+                    <AddCircleOutlinedIcon
+                      data-aos="fade-in"
+                      data-aos-duration="1000"
+                      data-aos-mirror="true"
+                      data-aos-easing="ease-in-out"
+                      onClick={() => handleAddToCart(drink)}
+                      style={{
+                        color: "#9030aa",
+                        fontSize: "25px",
+                        backgroundColor: "white",
+                        borderRadius: "50%",  
+                        zIndex: 20,
+                        cursor: "pointer",
+                      }}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

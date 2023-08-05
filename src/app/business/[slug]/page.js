@@ -1,22 +1,22 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import Menu from "../components/menu";
+import Menu from "@/components/menu";
 import FloatingCart from "@/components/floatingCart";
 import Modal from "@/components/modal";
 import { useMenuContext } from "@/context/MenuContext";
 import { useCart } from "@/context/CartContext";
 
-export default function Home() {
+export default function Home({ params }) {
   const { getBusinessMenu } = useMenuContext();
   const { cartDispatch } = useCart();
 
-  // const getMenus = async () => {
-  //   const response = await getBusinessMenu({
-  //     menuId: "64cae9bd9647ab96277288d4",
-  //   });
-  //   console.log(response);
-  // };
+  const getMenus = async () => {
+    const response = await getBusinessMenu({
+      businessId: params.slug,
+    });
+    console.log(response);
+  };
   const data = [
     {
       _id: "64c7bfd29b39e0928005ccfe",
@@ -153,7 +153,7 @@ export default function Home() {
       category: "juice",
     },
   ];
-  // getMenus();
+  getMenus();
   return (
     <div>
       <main
