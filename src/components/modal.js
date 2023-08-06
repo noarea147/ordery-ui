@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { useCart } from "../context/CartContext";
 import Lottie from "lottie-react";
-import emptyCart from "../animations/emptyCart.json";
+import emptyCart from "@/animations/emptyCart.json";
 import orderPlaced from "../animations/orderPlaced.json";
 
 export default function Modal(props) {

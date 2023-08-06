@@ -5,15 +5,17 @@ import Menu from "@/components/menu";
 import FloatingCart from "@/components/floatingCart";
 import Modal from "@/components/modal";
 import { useMenuContext } from "@/context/MenuContext";
+import { useBusinessContext } from "@/context/BusinessContext";
 import { useCart } from "@/context/CartContext";
 
 export default function Home({ params }) {
   const { getBusinessMenu } = useMenuContext();
+  const { getBusinessByUsername } = useBusinessContext();
   const { cartDispatch } = useCart();
 
   const getMenus = async () => {
-    const response = await getBusinessMenu({
-      businessId: params.slug,
+    const response = await getBusinessByUsername({
+      username: params.username,
     });
     console.log(response);
   };
