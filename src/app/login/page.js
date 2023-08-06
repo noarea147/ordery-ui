@@ -27,12 +27,14 @@ export default function page() {
         );
         router.push("/account");
       } else {
+        setLoading(false);
         setError("Invalid email or password");
       }
     } catch (error) {
       setError(error.message);
+      setLoading(false);
     }
-    setLoading(false);
+    // setLoading(false);
   };
 
   return (
