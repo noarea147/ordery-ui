@@ -5,4 +5,5 @@ export const //business
   GET_BUSINESS_MENU = "/menu/getMenu",
   //auth
   LOGIN = "/user/login",
-  REGISTER = "/user/register";
+  REGISTER = "/user/register",
+  VERIFY_ACCOUNT = "/user/verify";
