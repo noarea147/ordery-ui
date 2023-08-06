@@ -126,7 +126,7 @@ export default function page() {
               <button
                 type="submit"
                 onClick={verificationHandler}
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm  leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 Verify
               </button>
             </div>
@@ -135,7 +135,7 @@ export default function page() {
                 <button
                   type="submit"
                   onClick={resendCodeHandler}
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                   Resend code
                 </button>
               </div>
@@ -144,7 +144,7 @@ export default function page() {
               do you have an account ? {"  "}
               <a
                 href="/login"
-                className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                className=" leading-6 text-indigo-600 hover:text-indigo-500">
                 return to login
               </a>
             </p>

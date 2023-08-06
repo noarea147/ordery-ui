@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 export default function Account() {
   const router = useRouter();
   const [user, setUser] = useState();
-  const [currentTab, setCurrentTab] = useState("dashboard");
+  const [currentTab, setCurrentTab] = useState("business");
   const handleNav = (tab) => {
     switch (tab) {
       case DASHBOARD:
