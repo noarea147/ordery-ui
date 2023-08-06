@@ -38,11 +38,12 @@ export default function page() {
         router.push("/confirm");
       } else {
         setError("Something went wrong");
+        setLoading(false);
       }
     } catch (error) {
       setError(error.message);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

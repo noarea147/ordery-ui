@@ -91,9 +91,9 @@ export default function Menu(props) {
                       data-aos-easing="ease-in-out"
                       onClick={() => handleAddToCart(drink)}
                       style={{
-                        color: "#9030aa",
+                        color: "white",
                         fontSize: "25px",
-                        backgroundColor: "white",
+                        backgroundColor: "#ef9336",
                         borderRadius: "50%",  
                         zIndex: 20,
                         cursor: "pointer",

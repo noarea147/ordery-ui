@@ -25,7 +25,9 @@ export default function page() {
           "jwtAccessToken",
           response.data.Data?.tokens.accessToken
         );
-        router.push("/account");
+        if (!response.data.Data?.user.isVerified) {
+          router.push(`/confirm?useremail=${response.data.Data?.user.email}`);
+        }
       } else {
         setLoading(false);
         setError("Invalid email or password");

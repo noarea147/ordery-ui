@@ -36,6 +36,8 @@ export default function Account() {
     setUser(user);
     if (!user) {
       router.push("/login");
+    }else if(!user.isVerified){
+      router.push("/login");
     }
   }, []);
 
