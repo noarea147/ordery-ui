@@ -5,6 +5,8 @@ import {
   CREATE_MENU,
   GET_BUSINESS_MENU,
   GET_MY_BUSINESS_MENUS,
+  ADD_PRODUCT,
+  GET_PRODUCTS,
 } from "../helpers/urls";
 const MenuContext = createContext();
 export function useMenuContext() {
@@ -18,13 +20,6 @@ export default function MenuProvider({ children }) {
       data: data,
     });
   }
-  async function getMyBusinessMenus(data) {
-    return await axiosFactory({
-      url: GET_MY_BUSINESS_MENUS,
-      method: METHOD_POST,
-      data: data,
-    });
-  }
   async function createMenu(data) {
     return await axiosFactory({
       url: CREATE_MENU,
@@ -32,9 +27,24 @@ export default function MenuProvider({ children }) {
       data: data,
     });
   }
+  async function getMyBusinessMenus(data) {
+    return await axiosFactory({
+      url: GET_MY_BUSINESS_MENUS,
+      method: METHOD_POST,
+      data: data,
+    });
+  }
+
   async function getMenuProducts(data) {
     return await axiosFactory({
       url: GET_PRODUCTS,
+      method: METHOD_POST,
+      data: data,
+    });
+  }
+  async function addProduct(data) {
+    return await axiosFactory({
+      url: ADD_PRODUCT,
       method: METHOD_POST,
       data: data,
     });
@@ -45,6 +55,7 @@ export default function MenuProvider({ children }) {
     getMyBusinessMenus,
     createMenu,
     getMenuProducts,
+    addProduct,
   };
   return <MenuContext.Provider value={value}>{children}</MenuContext.Provider>;
 }

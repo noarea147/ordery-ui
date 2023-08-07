@@ -8,6 +8,7 @@ export const //business
   CREATE_MENU = "/menu/create",
   //product
   GET_PRODUCTS = "/menu/getMenuProducts",
+  ADD_PRODUCT = "/menu/addProduct",
   //auth
   LOGIN = "/user/login",
   REGISTER = "/user/register",

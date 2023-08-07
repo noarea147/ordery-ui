@@ -1,9 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useMenuContext } from "../../../../context/MenuContext";
-import Header from "@/components/Dashboard/components/header";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { useRouter } from "next/navigation";
 import Lottie from "lottie-react";
 import logginAnimation from "@/animations/orderPlaced.json";
 import BusinessNotfound from "@/components/Dashboard/components/business/businessNotfound";
@@ -11,16 +9,17 @@ import BusinessHeading from "@/components/Dashboard/components/business/business
 import AddProducts from "@/components/Dashboard/components/business/addProducts";
 
 export default function page({ params }) {
+  const { getMyBusinessMenus, createMenu, addProduct, getMenuProducts } =
+    useMenuContext();
   const [notFound, setNotFound] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-  const [isEditingProduct, setIsEditingProduct] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [menuName, setMenuName] = useState("");
   const [menuDescription, setMenuDescription] = useState("");
   const [menuCategory, setMenuCategory] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const { getMyBusinessMenus, createMenu } = useMenuContext();
+
   const [business, setBusiness] = useState();
   useEffect(() => {
     const getBusinessMenus = async () => {
@@ -33,9 +32,6 @@ export default function page({ params }) {
     };
     getBusinessMenus();
   }, []);
-  const handleBack = () => {
-    router.back();
-  };
 
   const addMenuHandler = async () => {
     setLoading(true);
@@ -58,8 +54,28 @@ export default function page({ params }) {
       setError(response.data?.Message);
     }
   };
-  const showEditedProduct = () => {
-    setIsEditingProduct(true);
+  const handleAddProduct = async (data) => {
+    const response = await addProduct(data);
+    if (response.data?.StatusCode === 201) {
+      business.menus.map((menu) => {
+        if (menu._id === data.menuId) {
+          menu.products.push(response.data?.Data);
+        }
+      });
+      setBusiness(business);
+      setIsSuccess(true);
+    } else {
+      setIsSuccess(false);
+      setError(response.data?.Message);
+    }
+  };
+  const getProductsHandler = async (menuId) => {
+    const response = await getMenuProducts({ menuId: menuId });
+    return response;
+  };
+
+  const Success = (val) => {
+    setIsSuccess(val);
   };
   return (
     <>
@@ -84,7 +100,7 @@ export default function page({ params }) {
                 </div>
               </li>
               {business?.menus?.map((menu) => (
-                <div className="py-5 shadow-xl p-6 rounded-xl bg-gray-200 hover:bg-gray-100 m-4">
+                <div className="py-5 shadow-xl p-6 rounded-xl bg-gray-200 m-4">
                   <li
                     key={menu._id}
                     className="flex justify-between items-center gap-x-6 "
@@ -115,7 +131,15 @@ export default function page({ params }) {
                       </p>
                     </div>
                   </li>
-                  <AddProducts products={menu.products} />
+
+                  <AddProducts
+                    isSuccess={isSuccess}
+                    handleGetProducts={getProductsHandler}
+                    Success={Success}
+                    products={menu.products}
+                    menuId={menu._id}
+                    handleAddProduct={handleAddProduct}
+                  />
                 </div>
               ))}
             </>
