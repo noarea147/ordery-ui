@@ -1,24 +1,30 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Menu from "@/components/menu";
 import FloatingCart from "@/components/floatingCart";
 import Modal from "@/components/modal";
-import { useMenuContext } from "@/context/MenuContext";
 import { useBusinessContext } from "@/context/BusinessContext";
 import { useCart } from "@/context/CartContext";
 
 export default function Home({ params }) {
-  const { getBusinessMenu } = useMenuContext();
   const { getBusinessByUsername } = useBusinessContext();
+  const [business, setBusiness] = useState([]);
   const { cartDispatch } = useCart();
 
-  const getMenus = async () => {
-    const response = await getBusinessByUsername({
-      username: params.username,
-    });
-    console.log(response);
-  };
+  useEffect(() => {
+    const getMenus = async () => {
+      const response = await getBusinessByUsername({
+        username: params.username,
+      });
+      if (response.data.StatusCode === 200) {
+        setBusiness(response.data.Data);
+      }
+    };
+    getMenus();
+    console.log(business);
+  }, []);
+
   const data = [
     {
       _id: "64c7bfd29b39e0928005ccfe",
@@ -155,7 +161,6 @@ export default function Home({ params }) {
       category: "juice",
     },
   ];
-  getMenus();
   return (
     <div>
       <main
@@ -175,7 +180,7 @@ export default function Home({ params }) {
             className="text-3xl font-bold text-center"
             data-aos="fade-down"
             data-aos-duration="1000">
-            Welcome to {"Coffee name"}
+            Welcome to {business.businessName}
           </h1>
         </div>
         <div className="flex flex-col justify-start w-full">
@@ -183,8 +188,8 @@ export default function Home({ params }) {
             {"Menu"}
           </h2>
         </div>
-        {data.map((menu, index) =>
-          index + 1 === data.length ? (
+        {business.menus?.map((menu, index) =>
+          index + 1 === business.length ? (
             <Menu
               key={index}
               name={menu.category}

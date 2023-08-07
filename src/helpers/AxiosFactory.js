@@ -91,19 +91,22 @@ function getHeader(method, data, url) {
 }
 
 async function getAccessToken() {
-  let header = {
-    "Content-Type": "application/json",
-    authorization: `Bearer ${localStorage.getItem("jwtRefreshToken")}`,
-  };
-  let url = process.env.REACT_APP_BASE_URL + "user/refresh";
-  let response = await axios.get(url, header);
-  if (response.status === 200) {
-    localStorage.setItem("jwtAccessToken", response.data.data.accessToken);
-    console.log("your access token just refreshed you fine");
-  } else {
-    localStorage.removeItem("user");
-    localStorage.removeItem("jwtAccessToken");
-    localStorage.removeItem("jwtRefreshToken");
-    window.location.href = "/";
-  }
+  localStorage.removeItem("user");
+  localStorage.removeItem("jwtAccessToken");
+  window.location.href = "/login";
+  // let header = {
+  //   "Content-Type": "application/json",
+  //   authorization: `Bearer ${localStorage.getItem("jwtRefreshToken")}`,
+  // };
+  // let url = process.env.REACT_APP_BASE_URL + "user/refresh";
+  // let response = await axios.get(url, header);
+  // if (response.status === 200) {
+  //   localStorage.setItem("jwtAccessToken", response.data.data.accessToken);
+  //   console.log("your access token just refreshed you fine");
+  // } else {
+  //   localStorage.removeItem("user");
+  //   localStorage.removeItem("jwtAccessToken");
+  //   localStorage.removeItem("jwtRefreshToken");
+  //   window.location.href = "/";
+  // }
 }

@@ -20,7 +20,7 @@ export default function Modal(props) {
     const orderTotal = () => {
       let total = 0;
       cartProducts?.map((product) => {
-        total += product.prices[0].price;
+        total += parseFloat(product.prices[0].price);
       });
       setTotal(total);
     };

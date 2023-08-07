@@ -69,7 +69,7 @@ export default function page() {
             </h3>
           </>
         ) : (
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={loginHandler}>
             <div>
               <label
                 htmlFor="email"
@@ -83,7 +83,7 @@ export default function page() {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  required
+                  required={true}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
               </div>
@@ -110,7 +110,7 @@ export default function page() {
                   name="password"
                   type="password"
                   autoComplete="current-password"
-                  required
+                  required={true}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
               </div>
@@ -118,7 +118,6 @@ export default function page() {
             <div>
               <button
                 type="submit"
-                onClick={loginHandler}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm  leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 Sign in
               </button>
@@ -126,7 +125,7 @@ export default function page() {
           </form>
         )}
         <p className="mt-10 text-center text-sm text-gray-500">
-          you don't have an account yet ?
+          you don't have an account yet ? {"  "}
           <a
             href="/register"
             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
