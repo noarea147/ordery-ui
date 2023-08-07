@@ -3,9 +3,10 @@ import React, { createContext, useContext, useReducer } from "react";
 
 // Initial cart state
 const initialCartState = {
-  products: localStorage.getItem("cartProducts")
-    ? JSON.parse(localStorage.getItem("cartProducts"))
-    : [],
+  products:
+    typeof window !== "undefined" && localStorage.getItem("cartProducts")
+      ? JSON.parse(localStorage.getItem("cartProducts"))
+      : [],
   cart: false,
 };
 

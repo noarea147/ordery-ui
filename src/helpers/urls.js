@@ -4,6 +4,10 @@ export const //business
   CREATE_BUSINESS = "/business/create",
   //menu
   GET_BUSINESS_MENU = "/menu/getMenu",
+  GET_MY_BUSINESS_MENUS = "/menu/getMyMenus",
+  CREATE_MENU = "/menu/create",
+  //product
+  GET_PRODUCTS = "/menu/getMenuProducts",
   //auth
   LOGIN = "/user/login",
   REGISTER = "/user/register",
