@@ -4,9 +4,10 @@ import { useCart } from "../context/CartContext";
 import Lottie from "lottie-react";
 import emptyCart from "@/animations/emptyCart.json";
 import orderPlaced from "../animations/orderPlaced.json";
+import { useBusinessContext } from "@/context/BusinessContext";
 
 export default function Modal(props) {
-  // const [showModal, setShowModal] = useState(false);
+  const { placeOrder } = useBusinessContext();
   const [total, setTotal] = useState(0);
   const [update, setUpdate] = useState(false);
   const [orderStatus, setOrderStatus] = useState("shopping");
@@ -42,7 +43,6 @@ export default function Modal(props) {
     }
     orderTotal();
     cartProducts && removeDuplicatesAndGetCounts(cartProducts);
-    // setShowModal(cart);
   }, [cart, update]);
   const handleRemoveFromCart = (name) => {
     const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
@@ -56,6 +56,30 @@ export default function Modal(props) {
       setUpdate(!update);
       cartDispatch({ type: "REMOVE_FROM_CART" });
     }
+  };
+
+  const handlePlaceOrder = async () => {
+    const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
+    const order = {
+      products: cartProducts,
+      total: total,
+      tableNumber: props.tableNumber,
+      businessId: props.businessId,
+    };
+    const response = await placeOrder(order);
+    if (response.data.StatusCode === 201) {
+      localStorage.removeItem("cartProducts");
+      cartDispatch({ type: "CLEAR_CART" });
+      setOrderStatus("placed");
+    } else {
+      setOrderStatus("error");
+    }
+
+    setOrderStatus("placed");
+  };
+  const handleBack = () => {
+    cartDispatch({ type: "TOGGLE_CART" });
+    setOrderStatus("shopping");
   };
 
   return (
@@ -73,13 +97,12 @@ export default function Modal(props) {
                 <div className="justify-center items-center flex-row">
                   <div className="relative p-6 flex-auto">
                     <div className="flex-col items-center justify-center pt-5 rounded-t w-full">
-                      <div className="flex items-center justify-center">
+                      <div className="flex flex-col items-center justify-center">
                         <Lottie
                           animationData={orderPlaced}
                           loop={false}
                           style={{ width: "200px", height: "200px" }}
                         />
-                        <br />
                       </div>
                       <div className="flex items-center justify-center">
                         <h3 className="text-3xl font-semibold">
@@ -111,26 +134,28 @@ export default function Modal(props) {
                 </div>
               ) : null}
               {products.length === 0 ? (
-                <div className="justify-center items-center flex-row">
-                  <div className="relative p-6 flex-auto">
-                    <div className="flex-col items-center justify-center pt-5 rounded-t w-full">
-                      <div className="flex items-center justify-center">
-                        <Lottie
-                          style={{ width: "150px", height: "150px" }}
-                          animationData={emptyCart}
-                          loop={false}
-                        />
-                        <br />
-                      </div>
-                      <div className="flex items-center justify-center">
-                        <h3 className="text-3xl font-semibold">
-                          your cart is empty
-                        </h3>
+                orderStatus === "placed" ? null : (
+                  <div className="justify-center items-center flex-row">
+                    <div className="relative p-6 flex-auto">
+                      <div className="flex-col items-center justify-center pt-5 rounded-t w-full">
+                        <div className="flex items-center justify-center">
+                          <Lottie
+                            style={{ width: "150px", height: "150px" }}
+                            animationData={emptyCart}
+                            loop={false}
+                          />
+                          <br />
+                        </div>
+                        <div className="flex items-center justify-center">
+                          <h3 className="text-3xl font-semibold">
+                            your cart is empty
+                          </h3>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ) : (
+                )
+              ) : orderStatus === "placed" ? null : (
                 <div className="relative p-6 flex-auto ">
                   <div className="flex items-start justify-between pt-5 rounded-t">
                     <h3 className="text-3xl font-semibold text-[#e2974b]">
@@ -190,16 +215,19 @@ export default function Modal(props) {
                 <button
                   className="text-gray-400 background-transparent px-6 py-2 t outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
-                  onClick={() => cartDispatch({ type: "TOGGLE_CART" })}>
+                  onClick={handleBack}>
                   Go Back
                 </button>
-                {products.length !== 0 && (
-                  <button
-                    className="text-white bg-[#2f4a77]	 font-bold  px-6 py-3 rounded-xl shadow-xl outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button">
-                    place order
-                  </button>
-                )}
+                {products.length !== 0 ? (
+                  orderStatus === "placed" ? null : (
+                    <button
+                      onClick={handlePlaceOrder}
+                      className="text-white bg-[#2f4a77]	 font-bold  px-6 py-3 rounded-xl shadow-xl outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      type="button">
+                      place order
+                    </button>
+                  )
+                ) : null}
               </div>
             </div>
           </div>

@@ -5,6 +5,7 @@ import {
   GET_BUSINESS,
   GET_BUSINESS_BY_USERNAME,
   CREATE_BUSINESS,
+  PLACE_ORDER,
 } from "../helpers/urls";
 const BusinessContext = createContext();
 export function useBusinessContext() {
@@ -32,11 +33,19 @@ export default function BusinessProvider({ children }) {
       data: data,
     });
   }
+  async function placeOrder(data) {
+    return await axiosFactory({
+      url: PLACE_ORDER,
+      method: METHOD_POST,
+      data: data,
+    });
+  }
 
   const value = {
     getMyBusiness,
     getBusinessByUsername,
     createBusiness,
+    placeOrder,
   };
   return (
     <BusinessContext.Provider value={value}>

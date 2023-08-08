@@ -15,6 +15,7 @@ export default function Menu(props) {
   const handleAddToCart = (product) => {
     cartDispatch({ type: "ADD_TO_CART", payload: product });
   };
+  
 
   const iconComponent = (name) => {
     switch (name) {

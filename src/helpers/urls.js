@@ -9,6 +9,8 @@ export const //business
   //product
   GET_PRODUCTS = "/menu/getMenuProducts",
   ADD_PRODUCT = "/menu/addProduct",
+  //order
+  PLACE_ORDER = "/order/placeOrder",
   //auth
   LOGIN = "/user/login",
   REGISTER = "/user/register",

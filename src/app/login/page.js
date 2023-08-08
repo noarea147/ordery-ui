@@ -19,13 +19,16 @@ export default function page() {
       setError("");
       setLoading(true);
       const response = await login({ email: email, password: password });
+      console.log("response", response);
       if (response.data?.StatusCode === 200) {
         localStorage.setItem("user", JSON.stringify(response.data.Data?.user));
         localStorage.setItem(
           "jwtAccessToken",
           response.data.Data?.tokens.accessToken
         );
+
         if (!response.data.Data?.user.isVerified) {
+          console.log("email", response.data.Data?.user.email);
           router.push(`/confirm?useremail=${response.data.Data?.user.email}`);
         }
       } else {
@@ -69,7 +72,7 @@ export default function page() {
             </h3>
           </>
         ) : (
-          <form className="space-y-6" onSubmit={loginHandler}>
+          <form className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -117,6 +120,7 @@ export default function page() {
             </div>
             <div>
               <button
+                onClick={loginHandler}
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm  leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 Sign in
