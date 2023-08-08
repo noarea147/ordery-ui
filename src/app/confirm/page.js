@@ -45,7 +45,6 @@ export default function page() {
     e.preventDefault();
     try {
       const user = JSON.parse(localStorage.getItem("user"));
-      console.log(user);
       if (!user) {
         return router.push("/login");
       }

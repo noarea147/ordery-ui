@@ -68,18 +68,15 @@ export default function Modal(props) {
     };
     const response = await placeOrder(order);
     if (response.data.StatusCode === 201) {
-      localStorage.removeItem("cartProducts");
-      cartDispatch({ type: "CLEAR_CART" });
       setOrderStatus("placed");
+      setTimeout(() => {
+        localStorage.removeItem("cartProducts");
+        cartDispatch({ type: "CLEAR_CART" });
+        setOrderStatus("shopping");
+      }, 3000);
     } else {
       setOrderStatus("error");
     }
-
-    setOrderStatus("placed");
-  };
-  const handleBack = () => {
-    cartDispatch({ type: "TOGGLE_CART" });
-    setOrderStatus("shopping");
   };
 
   return (
@@ -105,9 +102,11 @@ export default function Modal(props) {
                         />
                       </div>
                       <div className="flex items-center justify-center">
-                        <h3 className="text-3xl font-semibold">
-                          your order has been placed
-                        </h3>
+                        <center>
+                          <h3 className="text-3xl font-semibold">
+                            your order has been placed
+                          </h3>
+                        </center>
                       </div>
                     </div>
                   </div>
@@ -215,7 +214,7 @@ export default function Modal(props) {
                 <button
                   className="text-gray-400 background-transparent px-6 py-2 t outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
-                  onClick={handleBack}>
+                  onClick={() => cartDispatch({ type: "TOGGLE_CART" })}>
                   Go Back
                 </button>
                 {products.length !== 0 ? (

@@ -6,9 +6,11 @@ import Lottie from "lottie-react";
 import logginAnimation from "@/animations/orderPlaced.json";
 
 export default function Business() {
-  const { getMyBusiness, createBusiness } = useBusinessContext();
+  const { getMyBusiness, createBusiness } =
+    useBusinessContext();
 
   const [business, setBusiess] = useState([]);
+
   const [isCreating, setIsCreating] = useState(false);
   const [businessName, setBusinessName] = useState("");
   const [businessDescription, setBusinessDescription] = useState("");
@@ -26,7 +28,6 @@ export default function Business() {
       const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         const response = await getMyBusiness({ userId: user._id });
-        console.log("use Effect", response);
         if (response.data.StatusCode === 200) {
           setBusiess(response.data.Data);
         }
@@ -34,7 +35,9 @@ export default function Business() {
         router.push("/login");
       }
     };
+
     getMyBusinesses();
+    
   }, []);
 
   const handleCreateBusiness = async (e) => {
@@ -65,7 +68,6 @@ export default function Business() {
   const handleNavigateToBusiness = (id) => {
     router.push("/account/business/" + id.toString());
   };
-
   return (
     <div className="flex flex-col justify-center items-center m-4 ">
       {!isCreating ? (
@@ -80,7 +82,7 @@ export default function Business() {
                   <button
                     onClick={() => setIsCreating(true)}
                     type="submit"
-                    className="flex w-[50vh] m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    className="flex w-full m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Create one now
                   </button>
                 </div>
@@ -88,7 +90,7 @@ export default function Business() {
               {business.map((business) => (
                 <li
                   key={business._id}
-                  className="flex justify-between gap-x-6 py-5 shadow-xl p-6 rounded-xl bg-gray-200 hover:bg-gray-100 m-4"
+                  className="flex justify-between py-5 shadow-xl p-2 rounded-xl bg-gray-200 hover:bg-gray-100 m-4"
                   style={{ cursor: "pointer" }}
                   onClick={() => handleNavigateToBusiness(business._id)}>
                   <div className="flex min-w-0 gap-x-4">

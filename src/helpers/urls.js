@@ -11,6 +11,7 @@ export const //business
   ADD_PRODUCT = "/menu/addProduct",
   //order
   PLACE_ORDER = "/order/placeOrder",
+  GET_BUSINESS_ORDERS = "/order/getMyBusinessOrders",
   //auth
   LOGIN = "/user/login",
   REGISTER = "/user/register",

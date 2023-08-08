@@ -19,7 +19,6 @@ export default function page() {
       setError("");
       setLoading(true);
       const response = await login({ email: email, password: password });
-      console.log("response", response);
       if (response.data?.StatusCode === 200) {
         localStorage.setItem("user", JSON.stringify(response.data.Data?.user));
         localStorage.setItem(
@@ -27,8 +26,9 @@ export default function page() {
           response.data.Data?.tokens.accessToken
         );
 
-        if (!response.data.Data?.user.isVerified) {
-          console.log("email", response.data.Data?.user.email);
+        if (response.data.Data?.user.isVerified) {
+          router.push("/account");
+        } else {
           router.push(`/confirm?useremail=${response.data.Data?.user.email}`);
         }
       } else {
