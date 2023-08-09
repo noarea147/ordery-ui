@@ -1,16 +1,18 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Menu from "@/components/menu";
-import FloatingCart from "@/components/floatingCart";
-import Modal from "@/components/modal";
+import Menu from "@/components/BusinessMenu/menu";
+import FloatingCart from "@/components/BusinessMenu/floatingCart";
+import Modal from "@/components/BusinessMenu/modal";
 import { useBusinessContext } from "@/context/BusinessContext";
 import { useCart } from "@/context/CartContext";
+import { useRouter } from "next/navigation";
 
 export default function Home({ params }) {
+  const router = useRouter();
   const { getBusinessByUsername } = useBusinessContext();
   const [business, setBusiness] = useState([]);
-  const [businessId, setBusinessId] = useState(); // params.username = [username
+  const [businessId, setBusinessId] = useState();
   const [tableNumber, setTableNumber] = useState();
   const { cartDispatch } = useCart();
 
@@ -26,6 +28,7 @@ export default function Home({ params }) {
       }
     };
     getMenus();
+    console.log("business", business);
   }, []);
 
   return (
@@ -34,6 +37,16 @@ export default function Home({ params }) {
         className="flex min-h-screen flex-col items-center justify-start"
         data-aos="fade-up"
         data-aos-duration="500">
+        <div className="flex justify-end p-4 w-full">
+          <Image
+            className="inline-block h-10 w-10 rounded-full ring-2 ring-white cursor-pointer"
+            src="/login.jpeg"
+            width={50}
+            height={50}
+            onClick={() => router.push("/login")}
+            alt=""
+          />
+        </div>
         <div className="flex flex-col items-center justify-center w-full mt-10 mb-10">
           <Image
             src="/next.svg"

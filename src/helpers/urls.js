@@ -3,9 +3,11 @@ export const //business
   GET_BUSINESS_BY_USERNAME = "/business/GetBusinessByUsername",
   CREATE_BUSINESS = "/business/create",
   //menu
+  GET_CATEGORY = "/category/getCategories",
   GET_BUSINESS_MENU = "/menu/getMenu",
   GET_MY_BUSINESS_MENUS = "/menu/getMyMenus",
   CREATE_MENU = "/menu/create",
+  DELETE_MENU = "/menu/delete",
   //product
   GET_PRODUCTS = "/menu/getMenuProducts",
   ADD_PRODUCT = "/menu/addProduct",

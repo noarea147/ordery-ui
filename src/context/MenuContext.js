@@ -7,6 +7,8 @@ import {
   GET_MY_BUSINESS_MENUS,
   ADD_PRODUCT,
   GET_PRODUCTS,
+  GET_CATEGORY,
+  DELETE_MENU,
 } from "../helpers/urls";
 const MenuContext = createContext();
 export function useMenuContext() {
@@ -50,12 +52,30 @@ export default function MenuProvider({ children }) {
     });
   }
 
+  async function getMenuCategories(data) {
+    return await axiosFactory({
+      url: GET_CATEGORY,
+      method: METHOD_POST,
+      data: data,
+    });
+  }
+
+  async function deleteMenu(data) {
+    return await axiosFactory({
+      url: DELETE_MENU,
+      method: METHOD_POST,
+      data: data,
+    });
+  }
+
   const value = {
     getBusinessMenu,
     getMyBusinessMenus,
     createMenu,
     getMenuProducts,
     addProduct,
+    getMenuCategories,
+    deleteMenu
   };
   return <MenuContext.Provider value={value}>{children}</MenuContext.Provider>;
 }

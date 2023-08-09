@@ -151,7 +151,7 @@ export default function AddProducts(props) {
           </div>
         </div>
       ) : (
-        props.isSuccess && (
+        props.isSuccess === props.menuId && (
           <center>
             <Lottie
               animationData={logginAnimation}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 
 export default function FloatingCart() {
   const { cartState } = useCart();

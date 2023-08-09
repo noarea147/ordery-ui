@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Lottie from "lottie-react";
 import addToCard from "../animations/addToCard.json";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 
 export default function AddToCard(props) {
   const { cartDispatch } = useCart();

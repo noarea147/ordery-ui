@@ -14,7 +14,7 @@ export default async function axiosFactory({
   if (url.includes("http")) {
     isFake = true;
   }
-  const REACT_APP_BASE_URL = "http://192.168.1.52:9000";
+  const REACT_APP_BASE_URL = "http://192.168.0.2:9000";
   const header = getHeader(method, data, url);
   const urlToUse = isFake ? url : REACT_APP_BASE_URL + url;
   let response = { status: "", data: "", error: "" };
