@@ -28,7 +28,7 @@ export default function page() {
         email: email,
         password: password,
       });
-      console.log(response);
+
       if (response.data === "User already exists") {
         setError("Email is used try to login");
         setLoading(false);

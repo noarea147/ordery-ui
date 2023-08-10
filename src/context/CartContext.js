@@ -8,6 +8,8 @@ const initialCartState = {
       ? JSON.parse(localStorage.getItem("cartProducts"))
       : [],
   cart: false,
+  pricesModal: false,
+  targetProduct: {},
 };
 
 // Cart reducer to handle actions
@@ -18,7 +20,11 @@ const cartReducer = (state, action) => {
         "cartProducts",
         JSON.stringify([...state.products, action.payload])
       );
-      return { ...state, products: [...state.products, action.payload] };
+      return {
+        ...state,
+        products: [...state.products, action.payload],
+        pricesModal: false,
+      };
 
     case "REMOVE_FROM_CART":
       return {
@@ -28,6 +34,13 @@ const cartReducer = (state, action) => {
 
     case "TOGGLE_CART":
       return { ...state, cart: !state.cart };
+
+    case "TOGGLE_PRICES_MODAL":
+      return {
+        ...state,
+        pricesModal: !state.pricesModal,
+        targetProduct: action.payload,
+      };
 
     case "CLEAR_CART":
       return { ...state, products: [], cart: false };

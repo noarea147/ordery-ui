@@ -13,7 +13,7 @@ export default function AddProducts(props) {
   useEffect(() => {
     const handleGetProducts = async () => {
       const response = await props.handleGetProducts(props.menuId);
-      console.log(response);
+
       if (response.data.StatusCode === 200) {
         setProducts(response.data.Data.products);
       }

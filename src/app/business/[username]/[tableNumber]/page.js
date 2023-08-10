@@ -7,6 +7,7 @@ import Modal from "@/components/BusinessMenu/modal";
 import { useBusinessContext } from "@/context/BusinessContext";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
+import PriceModal from "@/components/BusinessMenu/priceModal";
 
 export default function Home({ params }) {
   const router = useRouter();
@@ -28,7 +29,6 @@ export default function Home({ params }) {
       }
     };
     getMenus();
-    console.log("business", business);
   }, []);
 
   return (
@@ -91,6 +91,8 @@ export default function Home({ params }) {
         onClick={() => cartDispatch({ type: "TOGGLE_CART" })}>
         <FloatingCart />
       </footer>
+
+      <PriceModal data={business.menus} />
       <Modal tableNumber={tableNumber} businessId={businessId} />
     </div>
   );

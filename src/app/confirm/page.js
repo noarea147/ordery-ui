@@ -55,7 +55,6 @@ export default function page() {
         VerificationKey: code,
         email: user.email,
       });
-      console.log("verificationCode response", response);
       if (response.data?.StatusCode === 200) {
         user.isVerified = true;
         localStorage.setItem("user", JSON.stringify(user));
