@@ -17,8 +17,10 @@ export default function Business() {
   const [businessEmail, setBusinessEmail] = useState("");
   const [businessPhone, setBusinessPhone] = useState("");
   const [businessUsername, setBusinessUsername] = useState("");
+  const [businessmaxDistance, setBusinessmaxDistance] = useState(0);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [location, setLocation] = useState({ lat: null, lng: null });
 
   const router = useRouter();
 
@@ -37,6 +39,24 @@ export default function Business() {
     getMyBusinesses();
   }, []);
 
+  const getBusinessLocation = async (e) => {
+    e.preventDefault();
+    if ("geolocation" in navigator) {
+      // Get the user's current position
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+        }
+      );
+    } else {
+      console.log("Geolocation is not available in this browser.");
+    }
+  };
+
   const handleCreateBusiness = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -46,13 +66,14 @@ export default function Business() {
       businessName: businessName,
       description: businessDescription,
       location: {
-        lng: 0,
-        lat: 0,
+        lng: location.lng,
+        lat: location.lat,
       },
       address: businessAddress,
       email: businessEmail,
       phone: businessPhone,
       username: businessUsername,
+      maxDistance: businessmaxDistance,
     });
     if (response.data.StatusCode === 201) {
       setBusiess([...business, response.data.Data]);
@@ -227,16 +248,49 @@ export default function Business() {
                 </div>
                 <div className="w-full">
                   <label
+                    htmlFor="maxDistance"
+                    className="block text-sm font-medium leading-6 text-gray-900">
+                    Max Radius (in meters)
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      onChange={(e) => setBusinessmaxDistance(e.target.value)}
+                      id="maxDistance"
+                      name="maxDistance"
+                      type="number"
+                      autoComplete="maxDistance"
+                      required
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
+                    />
+                  </div>
+                </div>
+                <div className="w-full">
+                  <label
                     htmlFor="Address"
                     className="block text-sm font-medium leading-6 text-gray-900">
                     Click to set business location
                   </label>
                   <div className="mt-2">
-                    <button className="flex w-[30vh] m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    <button
+                      onClick={getBusinessLocation}
+                      className="flex w-[30vh] m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                       Set location
                     </button>
+                    <span>
+                      longitude :{" "}
+                      {location.lng === null
+                        ? "location is not set"
+                        : location.lng}
+                    </span>
+                    <span>
+                      latitude :{" "}
+                      {location.lat === null
+                        ? "location is not set"
+                        : location.lat}
+                    </span>
                   </div>
                 </div>
+
                 <div className="w-full">
                   <label
                     htmlFor="email"
