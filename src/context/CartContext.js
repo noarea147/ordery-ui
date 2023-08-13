@@ -36,14 +36,21 @@ const cartReducer = (state, action) => {
       return { ...state, cart: !state.cart };
 
     case "TOGGLE_PRICES_MODAL":
+      const payload = action.payload
       return {
         ...state,
         pricesModal: !state.pricesModal,
-        targetProduct: action.payload,
+        targetProduct: payload,
       };
 
     case "CLEAR_CART":
-      return { ...state, products: [], cart: false };
+      return {
+        ...state,
+        products: [],
+        cart: false,
+        pricesModal: false,
+        targetProduct: {},
+      };
 
     default:
       return state;

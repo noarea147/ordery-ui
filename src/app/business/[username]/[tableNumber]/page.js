@@ -8,6 +8,7 @@ import { useBusinessContext } from "@/context/BusinessContext";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import PriceModal from "@/components/BusinessMenu/priceModal";
+import LoginIcon from '@mui/icons-material/Login';
 
 export default function Home({ params }) {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function Home({ params }) {
   const [businessId, setBusinessId] = useState();
   const [tableNumber, setTableNumber] = useState();
   const { cartDispatch } = useCart();
+  const [added , setAdded] = useState(false);
 
   useEffect(() => {
     const getMenus = async () => {
@@ -29,37 +31,39 @@ export default function Home({ params }) {
       }
     };
     getMenus();
-  }, []);
+  }, [added]);
+  const addToCart = () => {
+    setAdded(!added);
+  };
 
   return (
     <div>
       <main
         className="flex min-h-screen flex-col items-center justify-start"
-        data-aos="fade-up"
+        data-aos="fade-in"
         data-aos-duration="500">
         <div className="flex justify-end p-4 w-full">
-          <Image
-            className="inline-block h-10 w-10 rounded-full ring-2 ring-white cursor-pointer"
-            src="/login.jpeg"
-            width={50}
-            height={50}
+          <LoginIcon
+            className="inline-block h-10 w-10 rounded-full cursor-pointer"
+            width={35}
+            height={35}
             onClick={() => router.push("/login")}
             alt=""
           />
         </div>
         <div className="flex flex-col items-center justify-center w-full mt-10 mb-10">
-          <Image
+          {/* <Image
             src="/next.svg"
             alt="Coffee Logo"
             className="dark:invert mb-4"
             width={100}
             height={100}
             priority
-          />
+          /> */}
           <h1
             className="text-3xl font-bold text-center"
-            data-aos="fade-down"
-            data-aos-duration="1000">
+            data-aos="fade-in"
+            data-aos-duration="500">
             Welcome to {business.businessName}
           </h1>
         </div>
@@ -75,13 +79,15 @@ export default function Home({ params }) {
               name={menu.category}
               data={menu.products}
               margin={"75px"}
-            />
-          ) : (
-            <Menu
-              key={index}
-              name={menu.category}
-              data={menu.products}
-              margin={"0px"}
+              added={addToCart}
+              />
+              ) : (
+                <Menu
+                key={index}
+                name={menu.category}
+                data={menu.products}
+                margin={"0px"}
+                added={addToCart}
             />
           )
         )}

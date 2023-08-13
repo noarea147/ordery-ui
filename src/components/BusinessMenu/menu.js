@@ -7,9 +7,7 @@ import { useCart } from "../../context/CartContext";
 
 export default function Menu(props) {
   const [show, setShow] = useState(false);
-  const [added, setAdded] = useState(false);
   const { cartDispatch } = useCart();
-  const [products, setProducts] = useState();
 
   const iconComponent = (name) => {
     switch (name) {
@@ -109,8 +107,8 @@ export default function Menu(props) {
   };
 
   const handleAddToCart = (lg, drink) => {
-    console.log("drink", drink);
-    console.log("long", lg);
+    
+
     lg === 1
       ? cartDispatch({
           type: "ADD_TO_CART",
@@ -120,12 +118,10 @@ export default function Menu(props) {
           type: "TOGGLE_PRICES_MODAL",
           payload: drink,
         });
-    setAdded(!added);
+    console.log(drink);
+    props.added()
   };
 
-  useEffect(() => {
-    setProducts(props.data);
-  }, [added]);
 
   return (
     <>
@@ -153,12 +149,10 @@ export default function Menu(props) {
               backgroundColor: "#ef9336",
               marginTop: "-10px",
               marginBottom: props.margin,
-            }}
-            data-aos="fade-down"
-            data-aos-duration="300">
+            }}>
             <table className="w-full">
               <tbody>
-                {products.map((drink, index) => (
+                {props.data.map((drink, index) => (
                   <tr key={index}>
                     <td
                       width={"70%"}
@@ -186,7 +180,7 @@ export default function Menu(props) {
                     <td className="pl-6 pr-6 py-3">
                       <AddCircleOutlinedIcon
                         data-aos="fade-in"
-                        data-aos-duration="1000"
+                        data-aos-duration="500"
                         data-aos-mirror="true"
                         data-aos-easing="ease-in-out"
                         onClick={() =>

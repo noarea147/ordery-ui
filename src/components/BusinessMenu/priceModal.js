@@ -14,6 +14,11 @@ export default function PriceModal() {
       payload: currentProduct,
     });
   };
+  const dissmissModal = () => {
+    cartDispatch({
+      type: "TOGGLE_PRICES_MODAL",
+    });
+  };
 
   // useEffect(() => {
   //   const getProducts = () => {
@@ -41,8 +46,7 @@ export default function PriceModal() {
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-              <div className="sm:flex sm:items-start">
-                {/* <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+              {/* <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                 <svg
                   className="h-6 w-6 text-[#ef9336]"
                   fill="none"
@@ -57,28 +61,35 @@ export default function PriceModal() {
                   />
                 </svg>
               </div> */}
-                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                  <h3
-                    className="text-base font-semibold leading-6 text-gray-900"
-                    id="modal-title">
-                    Choose a variant {targetProduct?.name}
-                  </h3>
-                  <div className="mt-2 flex flex-col">
-                    {targetProduct?.prices?.map((price, key) => (
-                      <button
-                        key={key}
-                        onClick={() =>
-                          handleProductPrice([
-                            {
-                              variant: price.variant,
-                              price: price.price,
-                            },
-                          ])
-                        }
-                        className=" m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        {price.variant} : {price.price} dt
-                      </button>
-                    ))}
+
+              <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                <h3
+                  className="text-base font-semibold leading-6 text-gray-900 text-center"
+                  id="modal-title">
+                  Choose a variant {targetProduct?.name}
+                </h3>
+                <div className="mt-2 flex flex-col">
+                  {targetProduct?.prices?.map((price, key) => (
+                    <button
+                      key={key}
+                      onClick={() =>
+                        handleProductPrice([
+                          {
+                            variant: price.variant,
+                            price: price.price,
+                          },
+                        ])
+                      }
+                      className=" m-4 justify-center rounded-md bg-[#2f4a77] px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                      {price.variant} : {price.price} dt
+                    </button>
+                  ))}
+                  <div className="flex justify-center">
+                    <span
+                      onClick={() => dissmissModal()}
+                      className="text-sm text-gray-500 cursor-pointer">
+                      Back
+                    </span>
                   </div>
                 </div>
               </div>

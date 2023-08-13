@@ -8,29 +8,26 @@ import logginAnimation from "@/animations/orderPlaced.json";
 import BusinessNotfound from "@/components/Dashboard/components/business/businessNotfound";
 import BusinessHeading from "@/components/Dashboard/components/business/businessHeading";
 import AddProducts from "@/components/Dashboard/components/business/addProducts";
+import Order from "@/components/Dashboard/components/business/order";
+import Menu from "@/components/Dashboard/components/business/menu";
+import Image from "next/image";
 
 export default function page({ params }) {
-  const {
-    getMyBusinessMenus,
-    createMenu,
-    addProduct,
-    getMenuProducts,
-    getMenuCategories,
-    deleteMenu,
-  } = useMenuContext();
+  const { getMyBusinessMenus, createMenu, getMenuCategories } =
+    useMenuContext();
   const { getMyBusinessOrders } = useBusinessContext();
-  const [showOrderProducts, setShowOrderProducts] = useState(false);
   const [categories, setCategories] = useState([]);
   const [orders, setOrders] = useState([]);
   const [notFound, setNotFound] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [menuName, setMenuName] = useState("");
   const [menuDescription, setMenuDescription] = useState("");
   const [menuCategory, setMenuCategory] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [business, setBusiness] = useState();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [currentTab, setCurrentTab] = useState("orders");
   useEffect(() => {
     const getBusinessMenus = async () => {
       const response = await getMyBusinessMenus({ businessId: params.id });
@@ -59,18 +56,7 @@ export default function page({ params }) {
     getBusinessOrders();
     getBusinessMenus();
     getCategories();
-  }, [business]);
-
-  const deleteMenuHandler = async (menuId) => {
-    const response = await deleteMenu({
-      menuId: menuId,
-      businessId: params.id,
-    });
-    if (response.data?.StatusCode === 200) {
-      business.menus = business.menus.filter((menu) => menu._id !== menuId);
-      setBusiness(business);
-    }
-  };
+  }, []);
 
   const addMenuHandler = async () => {
     setLoading(true);
@@ -95,37 +81,30 @@ export default function page({ params }) {
       setError(response.data?.Message);
     }
   };
-  const handleAddProduct = async (data) => {
-    const response = await addProduct(data);
-    if (response.data?.StatusCode === 201) {
-      business.menus.map((menu) => {
-        if (menu._id === data.menuId) {
-          menu.products.push(response.data?.Data);
-        }
-      });
-      setBusiness(business);
-      setIsSuccess(data.menuId);
-    } else {
-      setIsSuccess("");
-      setError(response.data?.Message);
-    }
-  };
-  const getProductsHandler = async (menuId) => {
-    const response = await getMenuProducts({ menuId: menuId });
-    return response;
+
+  const isCreatingHandler = () => {
+    setIsCreating(!isCreating);
   };
 
-  const Success = (menuId) => {
-    setIsSuccess(menuId);
+  const addProductToMenu = (response, data) => {
+    setLoading(true);
+    business.menus.map((menu) => {
+      if (menu._id === data.menuId) {
+        menu.products.push(response);
+      }
+    });
+    setBusiness(business);
   };
 
-  const showOrderProductsHandler = (orderId) => {
-    if (showOrderProducts === orderId) {
-      setShowOrderProducts("");
-      return;
-    }
-    setShowOrderProducts(orderId);
+  const deleteProductFromMenu = (data) => {
+    setLoading(true);
+    business.menus = business.menus.filter((menu) => menu._id !== data);
+    setBusiness(business);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   };
+
   return (
     <>
       <BusinessHeading business={business} />
@@ -133,174 +112,94 @@ export default function page({ params }) {
         <BusinessNotfound />
       ) : !isCreating ? (
         <>
-          <ul className="mb-10">
-            <li>
-              <center>
-                <h2 className="text-2xl font-semibold leading-6 text-gray-900 p-6">
-                  Vos commandes
-                </h2>
-              </center>
-            </li>
-            {orders.length === 0 && (
-              <li>
-                <center>
-                  <h2 className="text-2xl font-semibold leading-6 text-gray-900">
-                    You don't have any orders yet
-                  </h2>
-                </center>
-              </li>
-            )}
-            <ul>
-              <ul>
-                {orders?.map((order, index) => (
-                  <li
-                    key={order._id}
-                    className={`py-5 shadow-xl p-6 rounded-xl bg-gray-200 m-4 ${
-                      index + 1 === orders.length ? "mb-16" : ""
-                    }`}>
-                    <div
-                      className="flex flex-row justify-around items-center"
-                      style={{ cursor: "pointer" }}>
-                      <p className="text-sm leading-6 text-gray-900">
-                        {`numéro de table : ${order.tableNumber}`}
-                      </p>
+          <div className="flex justify-between w-full">
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              data-drawer-target="default-sidebar"
+              data-drawer-toggle="default-sidebar"
+              aria-controls="default-sidebar"
+              type="button"
+              className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg">
+              <svg
+                className="w-12 h-12"
+                aria-hidden="true"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  clip-rule="evenodd"
+                  fill-rule="evenodd"
+                  d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+              </svg>
+            </button>
+          </div>
+          <aside
+            id="default-sidebar"
+            className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
+              isSidebarOpen ? "translate-x-0" : " -translate-x-full"
+            } bg-white dark:bg-gray-900`}
+            aria-label="Sidebar">
+            <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 mb-4  dark:bg-gray-800">
+              <div className="flex w-full justify-between items-center pr-3">
+                <span
+                  className="ml-auto text-2xl font-bold text-white cursor-pointer"
 
-                      <p className="text-sm leading-6 text-gray-900">
-                        Somme : {`${order.total} dt`}
-                      </p>
-                      <span
-                        className="text-sm leading-6 text-indigo-900 cursor-pointer"
-                        onClick={() => showOrderProductsHandler(order._id)}>
-                        {showOrderProducts === order._id
-                          ? "Masquer"
-                          : "Afficher"}{" "}
-                        la commande
-                      </span>
-                      <button
-                        type="submit"
-                        className="flex w-auto m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        Confirmer la commande
-                      </button>
-                    </div>
-                    {showOrderProducts === order._id && (
-                      <div className="flex flex-col justify-between">
-                        <div className="flex justify-between items-center gap-x-6 bg-gray-200 p-4 rounded-xl">
-                          <p className="text-sm font-semibold leading-6 text-green-600">
-                            Nom du produit
-                          </p>
-                          <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                            Prix
-                          </p>
-                          <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                            Variant
-                          </p>
-                        </div>
-                        {order.products?.map((product) => (
-                          <div
-                            key={product._id}
-                            className="flex justify-between items-center gap-x-6 bg-gray-200 p-4 rounded-xl">
-                            <p className="text-sm font-semibold leading-6 text-green-600">
-                              {product.name}
-                            </p>
-                            <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                              {product.prices[0].price + " dt"}
-                            </p>
-                            <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                              {product.prices[0].variant}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </ul>
-          </ul>
-          <ul role="list" className="divide-y divide-gray-100">
-            <li>
-              <center>
-                <h2 className="text-2xl font-semibold leading-6 text-gray-900 p-6">
-                  Votre menu
-                </h2>
-              </center>
-            </li>
-            {business?.menus?.length !== 0 ? (
-              <>
+                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                  x
+                </span>
+              </div>
+              <div className="flex w-full justify-between items-center p-3">
+                <Image
+                  src="/next.svg"
+                  alt="logo"
+                  width={200}
+                  height={20}
+                  className=" m-5 bg-gray-100"
+                />
+              </div>
+              <ul className="space-y-2 font-medium">
                 <li>
-                  <div className="flex flex-col justify-center items-center gap-x-6 py-5 p-6 m-4 ">
-                    <h2 className="text-2xl font-semibold leading-6 text-gray-900">
-                      Ajoutez des titres à votre menu
-                    </h2>
-                    <button
-                      onClick={() => setIsCreating(true)}
-                      type="submit"
-                      className="flex w-[50vh] m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                      Créez-en un maintenant
-                    </button>
-                  </div>
+                  <span
+                    onClick={() => {
+                      setCurrentTab("orders");
+                      setIsSidebarOpen(!isSidebarOpen);
+                    }}
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <span className="flex-1 ml-3 whitespace-nowrap">Orders</span>
+                    <span className="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
+                      3
+                    </span>
+                  </span>
                 </li>
-                {business?.menus?.map((menu) => (
-                  <div className="py-5 shadow-xl p-6 rounded-xl bg-gray-200 m-4">
-                    <li
-                      key={menu._id}
-                      className="flex justify-between items-center"
-                      style={{ cursor: "pointer" }}>
-                      <div className="flex min-w-0 ">
-                        <div className="min-w-0 flex-auto">
-                          <p className="text-sm font-semibold leading-6 text-gray-900">
-                            {menu.menuName}
-                          </p>
-                          <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                            {menu.description}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                        <p className="text-sm leading-6 text-gray-900">
-                          {menu.category}
-                        </p>
-                      </div>
-                      <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                        <p className="text-sm leading-6 text-gray-900">
-                          Produits dans ce menu : {menu.products?.length}
-                        </p>
-                        <span
-                          className="text-sm leading-6 text-indigo-900"
-                          onClick={() => deleteMenuHandler(menu._id)}>
-                          supprimer ce titre
-                        </span>
-                      </div>
-                    </li>
-                    <AddProducts
-                      isSuccess={isSuccess}
-                      handleGetProducts={getProductsHandler}
-                      Success={Success}
-                      products={menu.products}
-                      menuId={menu._id}
-                      handleAddProduct={handleAddProduct}
-                    />
-                  </div>
-                ))}
-              </>
-            ) : (
-              <li>
-                <div className="flex flex-col justify-center items-center gap-x-6 py-5 p-6 m-4 ">
-                  <center>
-                    <h2 className="text-2xl font-semibold leading-6 text-gray-900">
-                      Vous n'avez encore aucun titre dans votre menu
-                    </h2>
-                  </center>
-                  <button
-                    onClick={() => setIsCreating(true)}
-                    type="submit"
-                    className="flex w-[50vh] m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    commencez à créer vos titres maintenant
-                  </button>
-                </div>
-              </li>
-            )}
-          </ul>
+                <li>
+                  <span
+                    onClick={() => {
+                      setCurrentTab("menu");
+                      setIsSidebarOpen(!isSidebarOpen);
+                    }}
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <span className="flex-1 ml-3 whitespace-nowrap">Menu</span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </aside>
+          <div className="p-4 sm:ml-64">
+            <div className="p-4 rounded-lg ">
+              <div className="flex items-center justify-center mb-4 rounded ">
+                {currentTab === "orders" && <Order orders={orders} />}
+                {currentTab === "menu" && (
+                  <Menu
+                    business={business}
+                    id={params.id}
+                    isCreatingHandler={isCreatingHandler}
+                    addProductToMenu={addProductToMenu}
+                    deleteProductFromMenu={deleteProductFromMenu}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
         </>
       ) : (
         <div className="w-full">

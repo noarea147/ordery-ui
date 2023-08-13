@@ -6,8 +6,7 @@ import Lottie from "lottie-react";
 import logginAnimation from "@/animations/orderPlaced.json";
 
 export default function Business() {
-  const { getMyBusiness, createBusiness } =
-    useBusinessContext();
+  const { getMyBusiness, createBusiness } = useBusinessContext();
 
   const [business, setBusiess] = useState([]);
 
@@ -35,9 +34,7 @@ export default function Business() {
         router.push("/login");
       }
     };
-
     getMyBusinesses();
-    
   }, []);
 
   const handleCreateBusiness = async (e) => {
@@ -71,22 +68,9 @@ export default function Business() {
   return (
     <div className="flex flex-col justify-center items-center m-4 ">
       {!isCreating ? (
-        <ul role="list" className="divide-y divide-gray-100">
+        <ul role="list" className="w-full">
           {business.length !== 0 ? (
             <>
-              <li>
-                <div className="flex flex-col justify-center items-center gap-x-6 py-5 p-6 m-4 ">
-                  <h2 className="text-2xl font-semibold leading-6 text-gray-900">
-                    Add new business
-                  </h2>
-                  <button
-                    onClick={() => setIsCreating(true)}
-                    type="submit"
-                    className="flex w-full m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    Create one now
-                  </button>
-                </div>
-              </li>
               {business.map((business) => (
                 <li
                   key={business._id}
@@ -121,10 +105,20 @@ export default function Business() {
                   </div>
                 </li>
               ))}
+              <li>
+                <div className="flex flex-col justify-center items-center py-5 p-6 m-4 ">
+                  <button
+                    onClick={() => setIsCreating(true)}
+                    type="submit"
+                    className="flex w-full m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    Add new business
+                  </button>
+                </div>
+              </li>
             </>
           ) : (
             <li>
-              <div className="flex flex-col justify-center items-center gap-x-6 py-5 p-6 m-4 ">
+              <div className="flex flex-col justify-center items-center py-5 p-6 m-4 ">
                 <h2 className="text-2xl font-semibold leading-6 text-gray-900">
                   You don't have any business yet
                 </h2>

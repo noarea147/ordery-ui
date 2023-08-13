@@ -14,6 +14,7 @@ export default function Modal(props) {
   const [cartProducts, setcartProducts] = useState([]);
   const { cartDispatch, cartState } = useCart();
   const { products, cart } = cartState;
+  const [notes, setNotes] = useState("");
 
   useEffect(() => {
     let cartProducts = localStorage.getItem("cartProducts");
@@ -82,8 +83,10 @@ export default function Modal(props) {
       total: total,
       tableNumber: props.tableNumber,
       businessId: props.businessId,
+      notes: notes,
     };
     const response = await placeOrder(order);
+    console.log("response", response);
     if (response.data.StatusCode === 201) {
       setOrderStatus("placed");
       setTimeout(() => {
@@ -96,10 +99,11 @@ export default function Modal(props) {
     }
   };
 
+  console.log("cartProducts", cartProducts);
 
   return !cart ? null : (
     <div
-      data-aos="fade-up"
+      data-aos="fade-in"
       data-ease-in="ease-in-out"
       data-aos-duration="500"
       className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none m-4">
@@ -193,7 +197,9 @@ export default function Modal(props) {
                         className="flex flex-col py-2 "
                         style={{ wordBreak: "break-word" }}>
                         {product.product.name}{" "}
-                        <small style={{ marginTop: "0px" }}>standard</small>
+                        <small style={{ marginTop: "0px" }}>
+                          {product.product.variant}
+                        </small>
                       </td>
                       <td className="py-2">{product.product.count}</td>
                       <td className="py-2">
@@ -216,6 +222,19 @@ export default function Modal(props) {
                     </td>
                     <td colSpan="2" className="py-2">
                       {total} dt
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan="1" className="py-2">
+                      Notes :
+                    </td>
+                    <td colSpan="3" className="py-2">
+                      <textarea
+                        className="border-2 border-gray-300 rounded-lg p-2 w-full"
+                        onChange={(e) => setNotes(e.target.value)}
+                        value={notes}
+                        placeholder="Notes"
+                      />
                     </td>
                   </tr>
                 </tfoot>
