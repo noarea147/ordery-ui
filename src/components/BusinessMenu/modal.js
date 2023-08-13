@@ -99,7 +99,6 @@ export default function Modal(props) {
     }
   };
 
-  console.log("cartProducts", cartProducts);
 
   return !cart ? null : (
     <div

@@ -8,7 +8,7 @@ import { useBusinessContext } from "@/context/BusinessContext";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import PriceModal from "@/components/BusinessMenu/priceModal";
-import LoginIcon from '@mui/icons-material/Login';
+import LoginIcon from "@mui/icons-material/Login";
 
 export default function Home({ params }) {
   const router = useRouter();
@@ -17,7 +17,8 @@ export default function Home({ params }) {
   const [businessId, setBusinessId] = useState();
   const [tableNumber, setTableNumber] = useState();
   const { cartDispatch } = useCart();
-  const [added , setAdded] = useState(false);
+  const [added, setAdded] = useState(false);
+  const [location, setLocation] = useState({ lat: null, lng: null });
 
   useEffect(() => {
     const getMenus = async () => {
@@ -31,6 +32,20 @@ export default function Home({ params }) {
       }
     };
     getMenus();
+    if ("geolocation" in navigator) {
+      // Get the user's current position
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+        }
+      );
+    } else {
+      console.log("Geolocation is not available in this browser.");
+    }
   }, [added]);
   const addToCart = () => {
     setAdded(!added);
@@ -80,14 +95,14 @@ export default function Home({ params }) {
               data={menu.products}
               margin={"75px"}
               added={addToCart}
-              />
-              ) : (
-                <Menu
-                key={index}
-                name={menu.category}
-                data={menu.products}
-                margin={"0px"}
-                added={addToCart}
+            />
+          ) : (
+            <Menu
+              key={index}
+              name={menu.category}
+              data={menu.products}
+              margin={"0px"}
+              added={addToCart}
             />
           )
         )}
