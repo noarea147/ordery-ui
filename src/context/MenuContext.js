@@ -9,6 +9,7 @@ import {
   GET_PRODUCTS,
   GET_CATEGORY,
   DELETE_MENU,
+  EDIT_MENU
 } from "../helpers/urls";
 const MenuContext = createContext();
 export function useMenuContext() {
@@ -25,6 +26,13 @@ export default function MenuProvider({ children }) {
   async function createMenu(data) {
     return await axiosFactory({
       url: CREATE_MENU,
+      method: METHOD_POST,
+      data: data,
+    });
+  }
+  async function editMenu(data) {
+    return await axiosFactory({
+      url: EDIT_MENU,
       method: METHOD_POST,
       data: data,
     });
@@ -75,7 +83,8 @@ export default function MenuProvider({ children }) {
     getMenuProducts,
     addProduct,
     getMenuCategories,
-    deleteMenu
+    deleteMenu,
+    editMenu
   };
   return <MenuContext.Provider value={value}>{children}</MenuContext.Provider>;
 }

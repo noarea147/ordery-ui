@@ -13,7 +13,7 @@ import Menu from "@/components/Dashboard/components/business/menu";
 import Image from "next/image";
 
 export default function page({ params }) {
-  const { getMyBusinessMenus, createMenu, getMenuCategories } =
+  const { getMyBusinessMenus, createMenu, getMenuCategories , editMenu } =
     useMenuContext();
   const { getMyBusinessOrders } = useBusinessContext();
   const [categories, setCategories] = useState([]);
@@ -80,8 +80,33 @@ export default function page({ params }) {
     } else {
       setError(response.data?.Message);
     }
+    setLoading(false)
   };
 
+  const editMenuHandler = async (menuId) => {
+    setLoading(true);
+    const response = await editMenu({
+      businessId: params.id,
+      menuId : menuId,
+      menuName: menuName,
+      description: menuDescription,
+      category: menuCategory === "" ? categories[0].name : menuCategory,
+    });
+    if (response.data?.StatusCode === 201) {
+      setMenuName("");
+      setMenuDescription("");
+      setMenuCategory("");
+      setError("");
+      business.menus.push(response.data?.Data);
+      setBusiness(business);
+      setTimeout(() => {
+        setLoading(false);
+        setIsCreating(false);
+      }, 2000);
+    } else {
+      setError(response.data?.Message);
+    }
+  };
   const isCreatingHandler = () => {
     setIsCreating(!isCreating);
   };
@@ -143,7 +168,6 @@ export default function page({ params }) {
               <div className="flex w-full justify-between items-center pr-3">
                 <span
                   className="ml-auto text-2xl font-bold text-white cursor-pointer"
-
                   onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
                   x
                 </span>
@@ -165,7 +189,9 @@ export default function page({ params }) {
                       setIsSidebarOpen(!isSidebarOpen);
                     }}
                     className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <span className="flex-1 ml-3 whitespace-nowrap">Orders</span>
+                    <span className="flex-1 ml-3 whitespace-nowrap">
+                      Orders
+                    </span>
                     <span className="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
                       3
                     </span>
@@ -195,6 +221,7 @@ export default function page({ params }) {
                     isCreatingHandler={isCreatingHandler}
                     addProductToMenu={addProductToMenu}
                     deleteProductFromMenu={deleteProductFromMenu}
+                    editMenuHandler={editMenuHandler}
                   />
                 )}
               </div>

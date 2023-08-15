@@ -7,6 +7,7 @@ export const //business
   GET_BUSINESS_MENU = "/menu/getMenu",
   GET_MY_BUSINESS_MENUS = "/menu/getMyMenus",
   CREATE_MENU = "/menu/create",
+  EDIT_MENU = "/menu/edit",
   DELETE_MENU = "/menu/delete",
   //product
   GET_PRODUCTS = "/menu/getMenuProducts",

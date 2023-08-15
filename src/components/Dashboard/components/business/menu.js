@@ -7,6 +7,12 @@ export default function Menu(props) {
   const { addProduct, deleteMenu } = useMenuContext();
   const [addProductsModal, setAddProductsModal] = useState(false);
   const [updated, setUpdated] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const editMenuForm = () => {
+    props.isCreatingHandler();
+    setIsEditing(true);
+  };
 
   const handleAddProduct = async (data) => {
     const response = await addProduct(data);
@@ -75,6 +81,11 @@ export default function Menu(props) {
                     className="text-sm leading-6 text-indigo-900"
                     onClick={() => AddProductsModalHandler()}>
                     Ajouter des produits
+                  </span>
+                  <span
+                    className="text-sm leading-6 text-indigo-900"
+                    onClick={() => editMenuForm(menu)}>
+                    Modifer ce rubrique
                   </span>
                   <span
                     className="text-sm leading-6 text-indigo-900"
