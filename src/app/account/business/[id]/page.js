@@ -7,13 +7,12 @@ import Lottie from "lottie-react";
 import logginAnimation from "@/animations/orderPlaced.json";
 import BusinessNotfound from "@/components/Dashboard/components/business/businessNotfound";
 import BusinessHeading from "@/components/Dashboard/components/business/businessHeading";
-import AddProducts from "@/components/Dashboard/components/business/addProducts";
 import Order from "@/components/Dashboard/components/business/order";
 import Menu from "@/components/Dashboard/components/business/menu";
 import Image from "next/image";
 
 export default function page({ params }) {
-  const { getMyBusinessMenus, createMenu, getMenuCategories , editMenu } =
+  const { getMyBusinessMenus, createMenu, getMenuCategories, editMenu } =
     useMenuContext();
   const { getMyBusinessOrders } = useBusinessContext();
   const [categories, setCategories] = useState([]);
@@ -23,11 +22,14 @@ export default function page({ params }) {
   const [menuName, setMenuName] = useState("");
   const [menuDescription, setMenuDescription] = useState("");
   const [menuCategory, setMenuCategory] = useState("");
+  const [menuId, setMenuId] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [business, setBusiness] = useState();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("orders");
+  const [isEditing, setIsEditing] = useState(false);
+
   useEffect(() => {
     const getBusinessMenus = async () => {
       const response = await getMyBusinessMenus({ businessId: params.id });
@@ -59,6 +61,7 @@ export default function page({ params }) {
   }, []);
 
   const addMenuHandler = async () => {
+    console.log("create");
     setLoading(true);
     const response = await createMenu({
       businessId: params.id,
@@ -79,35 +82,51 @@ export default function page({ params }) {
       }, 2000);
     } else {
       setError(response.data?.Message);
+      setLoading(false);
     }
-    setLoading(false)
   };
 
-  const editMenuHandler = async (menuId) => {
+  const editMenuHandler = async () => {
+    console.log("edit");
     setLoading(true);
     const response = await editMenu({
       businessId: params.id,
-      menuId : menuId,
+      menuId: menuId,
       menuName: menuName,
       description: menuDescription,
       category: menuCategory === "" ? categories[0].name : menuCategory,
     });
-    if (response.data?.StatusCode === 201) {
+    if (response.data?.StatusCode === 200) {
       setMenuName("");
       setMenuDescription("");
       setMenuCategory("");
       setError("");
-      business.menus.push(response.data?.Data);
-      setBusiness(business);
+      let updatedMenusArray = business.menus.filter(
+        (menu) => menu._id !== menuId
+      );
+      updatedMenusArray.push(response.data.Data);
+
+      setBusiness((prevBusiness) => ({
+        ...prevBusiness,
+        menus: updatedMenusArray,
+      }));
       setTimeout(() => {
         setLoading(false);
         setIsCreating(false);
+        setIsEditing(false);
       }, 2000);
     } else {
       setError(response.data?.Message);
     }
   };
-  const isCreatingHandler = () => {
+  const isCreatingHandler = (state, menu) => {
+    if (state === "edit") {
+      setMenuId(menu._id);
+      setMenuName(menu.menuName);
+      setMenuDescription(menu.description);
+      setMenuCategory(menu.category);
+      setIsEditing(!isEditing);
+    }
     setIsCreating(!isCreating);
   };
 
@@ -152,8 +171,8 @@ export default function page({ params }) {
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
                 <path
-                  clip-rule="evenodd"
-                  fill-rule="evenodd"
+                  clipRule="evenodd"
+                  fillRule="evenodd"
                   d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
               </svg>
             </button>
@@ -193,7 +212,7 @@ export default function page({ params }) {
                       Orders
                     </span>
                     <span className="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                      3
+                     {orders.length}
                     </span>
                   </span>
                 </li>
@@ -222,6 +241,7 @@ export default function page({ params }) {
                     addProductToMenu={addProductToMenu}
                     deleteProductFromMenu={deleteProductFromMenu}
                     editMenuHandler={editMenuHandler}
+                    isEditing={isEditing}
                   />
                 )}
               </div>
@@ -243,14 +263,21 @@ export default function page({ params }) {
               <span
                 className="m-3 text-sm "
                 style={{ cursor: "pointer" }}
-                onClick={() => setIsCreating(false)}>
+                onClick={() => {
+                  setIsCreating(false);
+                  setIsEditing(false);
+                }}>
                 Retour
               </span>
             </center>
           ) : (
             <>
               <div className="w-full flex justify-start p-4">
-                <span onClick={() => setIsCreating(false)}>
+                <span
+                  onClick={() => {
+                    setIsCreating(false);
+                    setIsEditing(false);
+                  }}>
                   <ArrowBackIosIcon />
                 </span>
               </div>
@@ -262,7 +289,9 @@ export default function page({ params }) {
                 data-aos="fade-in"
                 data-aos-duration="1000">
                 <h2 className="text-2xl font-semibold leading-6 text-gray-900 mb-4">
-                  Créez un nouveau titre dans votre menu
+                  {isEditing
+                    ? "Modifer le titre dans votre menu"
+                    : "Créez un nouveau titre dans votre menu"}
                 </h2>
                 <div className="w-full">
                   <label
@@ -278,6 +307,7 @@ export default function page({ params }) {
                       type="text"
                       autoComplete="menuName"
                       required
+                      value={menuName}
                       placeholder="ex: Café"
                       className="block w-full rounded-md border-0 
               py-1.5 text-gray-900 shadow-sm ring-1 ring-inset 
@@ -298,6 +328,7 @@ export default function page({ params }) {
                       id="description"
                       name="description"
                       type="text"
+                      value={menuDescription}
                       autoComplete="description"
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
@@ -314,25 +345,30 @@ export default function page({ params }) {
                     <select
                       onChange={(e) => setMenuCategory(e.target.value)}
                       className="block w-full rounded-md border-0 
-                     py-1.5 text-gray-900 shadow-sm ring-1 ring-inset 
-                     ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                     focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
+             py-1.5 text-gray-900 shadow-sm ring-1 ring-inset 
+             ring-gray-300 placeholder:text-gray-400 focus:ring-2 
+             focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                       id="category"
                       name="category"
                       autoComplete="category"
                       required>
-                      {categories.map((category) => (
-                        <option value={category.name}>{category.name}</option>
+                      {categories.map((category, index) => (
+                        <option
+                          key={index}
+                          value={category.name}
+                          selected={category.name === menuCategory}>
+                          {category.name}
+                        </option>
                       ))}
                     </select>
                   </div>
                 </div>
 
                 <button
-                  onClick={addMenuHandler}
+                  onClick={isEditing ? editMenuHandler : addMenuHandler}
                   type="submit"
                   className="flex w-[50vh] m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                  Créer un nouveau titre
+                  {isEditing ? "Modifer le rubriques" : "Ajoutez un rubrique"}
                 </button>
               </form>
             </>

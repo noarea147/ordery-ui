@@ -7,12 +7,6 @@ export default function Menu(props) {
   const { addProduct, deleteMenu } = useMenuContext();
   const [addProductsModal, setAddProductsModal] = useState(false);
   const [updated, setUpdated] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-
-  const editMenuForm = () => {
-    props.isCreatingHandler();
-    setIsEditing(true);
-  };
 
   const handleAddProduct = async (data) => {
     const response = await addProduct(data);
@@ -53,9 +47,10 @@ export default function Menu(props) {
       {props.business?.menus?.length !== 0 ? (
         <>
           {props.business?.menus?.map((menu) => (
-            <div className="shadow-xl p-6 rounded-xl bg-gray-200 m-3 w-full">
+            <div
+              key={menu._id}
+              className="shadow-xl p-6 rounded-xl bg-gray-200 m-3 w-full">
               <li
-                key={menu._id}
                 className="flex justify-between items-center flex-col sm:flex-row sm:items-end"
                 style={{ cursor: "pointer" }}>
                 <div className="flex min-w-0 ">
@@ -84,7 +79,7 @@ export default function Menu(props) {
                   </span>
                   <span
                     className="text-sm leading-6 text-indigo-900"
-                    onClick={() => editMenuForm(menu)}>
+                    onClick={() => props.isCreatingHandler("edit", menu)}>
                     Modifer ce rubrique
                   </span>
                   <span
@@ -131,7 +126,7 @@ export default function Menu(props) {
               onClick={() => props.isCreatingHandler()}
               type="submit"
               className="flex w-[50vh] m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-              Ajoutez des rubriques à votre menu
+              Ajoutez un rubrique
             </button>
           </div>
         </li>
