@@ -19,7 +19,7 @@ export default function Order(props) {
           </h2>
         </center>
       </li>
-      {props.orders.length === 0 && (
+      {props.orders?.length === 0 && (
         <li>
           <center>
             <h2 className="text-2xl font-semibold leading-6 text-gray-900">
@@ -34,7 +34,7 @@ export default function Order(props) {
             <li
               key={order._id}
               className={`py-5 shadow-xl p-6 rounded-xl bg-gray-200 m-4 ${
-                index + 1 === orders.length ? "mb-16" : ""
+                index + 1 === props.orders.length ? "mb-16" : ""
               }`}>
               <div
                 className="flex flex-row justify-around items-center"
