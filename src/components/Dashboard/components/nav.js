@@ -2,13 +2,18 @@ import React from "react";
 import { DASHBOARD, BUSINESS } from "@/app/account/page";
 
 export default function Nav(props) {
+  const logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("jwtAccessToken");
+    window.location.href = "/login";
+  };
   return (
     <nav className="bg-gray-800">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <img className="h-8 w-8" src="vercel.svg" alt="ordery" />
+              <img className="w-20" src="logo-QR-GOAbs.png" alt="ordery" />
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
@@ -35,6 +40,13 @@ export default function Nav(props) {
                 </span>
               </div>
             </div>
+          </div>
+          <div>
+            <span
+              className="text-white px-3 py-2 text-sm font-medium cursor-pointer"
+              onClick={() => logout()}>
+              logout
+            </span>
           </div>
         </div>
       </div>

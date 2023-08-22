@@ -212,7 +212,7 @@ export default function page({ params }) {
                       Orders
                     </span>
                     <span className="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                     {orders.length}
+                      {orders.length}
                     </span>
                   </span>
                 </li>
@@ -229,22 +229,21 @@ export default function page({ params }) {
               </ul>
             </div>
           </aside>
-          <div className="p-4 sm:ml-64">
-            <div className="p-4 rounded-lg ">
-              <div className="flex items-center justify-center mb-4 rounded ">
-                {currentTab === "orders" && <Order orders={orders} />}
-                {currentTab === "menu" && (
-                  <Menu
-                    business={business}
-                    id={params.id}
-                    isCreatingHandler={isCreatingHandler}
-                    addProductToMenu={addProductToMenu}
-                    deleteProductFromMenu={deleteProductFromMenu}
-                    editMenuHandler={editMenuHandler}
-                    isEditing={isEditing}
-                  />
-                )}
-              </div>
+
+          <div className="p-4 rounded-lg ">
+            <div className="flex items-center justify-center mb-4 rounded ">
+              {currentTab === "orders" && <Order orders={orders} />}
+              {currentTab === "menu" && (
+                <Menu
+                  business={business}
+                  id={params.id}
+                  isCreatingHandler={isCreatingHandler}
+                  addProductToMenu={addProductToMenu}
+                  deleteProductFromMenu={deleteProductFromMenu}
+                  editMenuHandler={editMenuHandler}
+                  isEditing={isEditing}
+                />
+              )}
             </div>
           </div>
         </>

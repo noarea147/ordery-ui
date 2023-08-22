@@ -36,10 +36,10 @@ export default function Menu(props) {
     setAddProductsModal(!addProductsModal);
   };
   return (
-    <ul role="list">
+    <ul role="list" className="max-w-full w-full" >
       <li>
         <center>
-          <h2 className="text-2xl font-semibold leading-6 text-gray-900 p-6">
+          <h2 className="text-2xl font-semibold leading-6 text-gray-900 p-3">
             Votre menu
           </h2>
         </center>
@@ -49,7 +49,7 @@ export default function Menu(props) {
           {props.business?.menus?.map((menu) => (
             <div
               key={menu._id}
-              className="shadow-xl p-6 rounded-xl bg-gray-200 m-3 w-full">
+              className="shadow-xl p-3 rounded-xl bg-gray-200 mt-3">
               <li
                 className="flex justify-between items-center flex-col sm:flex-row sm:items-end"
                 style={{ cursor: "pointer" }}>
@@ -70,7 +70,7 @@ export default function Menu(props) {
                 </div>
                 <div className="flex flex-col sm:flex sm:flex-col sm:items-end items-center">
                   <p className="text-sm leading-6 text-gray-900">
-                    Produits dans ce menu : {menu.products?.length}
+                    Produits dans ce rebrique : {menu.products?.length}
                   </p>
                   <span
                     className="text-sm leading-6 text-indigo-900"
