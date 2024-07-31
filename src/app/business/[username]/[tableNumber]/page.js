@@ -22,6 +22,7 @@ export default function Home({ params }) {
   const [location, setLocation] = useState({ lat: null, lng: null });
   const [isInShop, setIsInShop] = useState(false);
 
+  // Fetch business data
   useEffect(() => {
     const getMenus = async () => {
       const response = await getBusinessByUsername({
@@ -36,56 +37,9 @@ export default function Home({ params }) {
     getMenus();
   }, [added]);
 
-  useEffect(() => {
-    const checkLocation = async () => {
-      const response = await getBusinessByUsername({
-        username: params.username,
-      });
-      if (response.data.StatusCode === 200) {
-        const { lng, lat } = response.data.Data.location;
-        const { maxDistance } = response.data.Data;
-
-        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-          console.log(lat1, lon1, lat2, lon2);
-          const R = 6371; // Radius of the earth in km
-          const dLat = deg2rad(lat2 - lat1);
-          const dLon = deg2rad(lon2 - lon1);
-          const a =
-            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(deg2rad(lat1)) *
-              Math.cos(deg2rad(lat2)) *
-              Math.sin(dLon / 2) *
-              Math.sin(dLon / 2);
-          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-          const distance = R * c; // Distance in km
-          return distance;
-        }
-
-        function deg2rad(deg) {
-          return deg * (Math.PI / 180);
-        }
-        const distance = getDistanceFromLatLonInKm(
-          lat,
-          lng,
-          location.lat,
-          location.lng
-        );
-        console.log(maxDistance, distance * 1000);
-        if (distance * 1000 > maxDistance) {
-          setIsInShop(false);
-        } else {
-          setIsInShop(true);
-        }
-      }
-    };
-    checkLocation();
-  }, [location]);
-  const addToCart = () => {
-    setAdded(!added);
-  };
+  // Geolocation handling
   useEffect(() => {
     if ("geolocation" in navigator) {
-      // Get the user's current position
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -100,12 +54,64 @@ export default function Home({ params }) {
     }
   }, []);
 
+  // Check if user is in the shop
+  useEffect(() => {
+    if (location.lat !== null && location.lng !== null) {
+      const checkLocation = async () => {
+        const response = await getBusinessByUsername({
+          username: params.username,
+        });
+        if (response.data.StatusCode === 200) {
+          const { lng, lat } = response.data.Data.location;
+          const { maxDistance } = response.data.Data;
+
+          function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the earth in km
+            const dLat = deg2rad(lat2 - lat1);
+            const dLon = deg2rad(lon2 - lon1);
+            const a =
+              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(deg2rad(lat1)) *
+                Math.cos(deg2rad(lat2)) *
+                Math.sin(dLon / 2) *
+                Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distance = R * c; // Distance in km
+            return distance;
+          }
+
+          function deg2rad(deg) {
+            return deg * (Math.PI / 180);
+          }
+
+          const distance = getDistanceFromLatLonInKm(
+            lat,
+            lng,
+            location.lat,
+            location.lng
+          );
+          if (distance * 1000 > maxDistance) {
+            setIsInShop(false);
+          } else {
+            setIsInShop(true);
+          }
+        }
+      };
+      checkLocation();
+    }
+  }, [location]);
+
+  const addToCart = () => {
+    setAdded(!added);
+  };
+
   return (
     <div>
       <main
         className="flex min-h-screen flex-col items-center justify-start"
         data-aos="fade-in"
-        data-aos-duration="500">
+        data-aos-duration="500"
+      >
         <div className="flex justify-end p-4 w-full">
           <LoginIcon
             className="inline-block h-10 w-10 rounded-full cursor-pointer"
@@ -127,7 +133,8 @@ export default function Home({ params }) {
           <h1
             className="text-3xl font-bold text-center"
             data-aos="fade-in"
-            data-aos-duration="500">
+            data-aos-duration="500"
+          >
             Welcome to {business.businessName}
           </h1>
         </div>
@@ -159,7 +166,8 @@ export default function Home({ params }) {
             )}
             <footer
               className="flex flex-col items-center justify-center w-full h-24"
-              onClick={() => cartDispatch({ type: "TOGGLE_CART" })}>
+              onClick={() => cartDispatch({ type: "TOGGLE_CART" })}
+            >
               <FloatingCart />
             </footer>
 

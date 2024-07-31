@@ -163,17 +163,20 @@ export default function page({ params }) {
               data-drawer-toggle="default-sidebar"
               aria-controls="default-sidebar"
               type="button"
-              className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg">
+              className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg"
+            >
               <svg
                 className="w-12 h-12"
                 aria-hidden="true"
                 fill="currentColor"
                 viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg">
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path
                   clipRule="evenodd"
                   fillRule="evenodd"
-                  d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+                  d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
+                ></path>
               </svg>
             </button>
           </div>
@@ -182,12 +185,14 @@ export default function page({ params }) {
             className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
               isSidebarOpen ? "translate-x-0" : " -translate-x-full"
             } bg-white dark:bg-gray-900`}
-            aria-label="Sidebar">
+            aria-label="Sidebar"
+          >
             <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 mb-4  dark:bg-gray-800">
               <div className="flex w-full justify-between items-center pr-3">
                 <span
                   className="ml-auto text-2xl font-bold text-white cursor-pointer"
-                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                >
                   x
                 </span>
               </div>
@@ -207,7 +212,8 @@ export default function page({ params }) {
                       setCurrentTab("orders");
                       setIsSidebarOpen(!isSidebarOpen);
                     }}
-                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                  >
                     <span className="flex-1 ml-3 whitespace-nowrap">
                       Orders
                     </span>
@@ -222,7 +228,8 @@ export default function page({ params }) {
                       setCurrentTab("menu");
                       setIsSidebarOpen(!isSidebarOpen);
                     }}
-                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                  >
                     <span className="flex-1 ml-3 whitespace-nowrap">Menu</span>
                   </span>
                 </li>
@@ -265,7 +272,8 @@ export default function page({ params }) {
                 onClick={() => {
                   setIsCreating(false);
                   setIsEditing(false);
-                }}>
+                }}
+              >
                 Retour
               </span>
             </center>
@@ -276,7 +284,8 @@ export default function page({ params }) {
                   onClick={() => {
                     setIsCreating(false);
                     setIsEditing(false);
-                  }}>
+                  }}
+                >
                   <ArrowBackIosIcon />
                 </span>
               </div>
@@ -286,7 +295,8 @@ export default function page({ params }) {
               <form
                 className="flex flex-col justify-center items-center m-4 "
                 data-aos="fade-in"
-                data-aos-duration="1000">
+                data-aos-duration="1000"
+              >
                 <h2 className="text-2xl font-semibold leading-6 text-gray-900 mb-4">
                   {isEditing
                     ? "Modifer le titre dans votre menu"
@@ -295,7 +305,8 @@ export default function page({ params }) {
                 <div className="w-full">
                   <label
                     htmlFor="menuName"
-                    className="block text-sm font-medium leading-6 text-gray-900">
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
                     Nom
                   </label>
                   <div className="mt-2 ">
@@ -318,7 +329,8 @@ export default function page({ params }) {
                 <div className="w-full">
                   <label
                     htmlFor="Description"
-                    className="block text-sm font-medium leading-6 text-gray-900">
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
                     Description
                   </label>
                   <div className="mt-2">
@@ -337,7 +349,8 @@ export default function page({ params }) {
                 <div className="w-full">
                   <label
                     htmlFor="Address"
-                    className="block text-sm font-medium leading-6 text-gray-900">
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
                     Catégorie
                   </label>
                   <div className="mt-2">
@@ -350,12 +363,14 @@ export default function page({ params }) {
                       id="category"
                       name="category"
                       autoComplete="category"
-                      required>
+                      required
+                    >
                       {categories.map((category, index) => (
                         <option
                           key={index}
                           value={category.name}
-                          selected={category.name === menuCategory}>
+                          selected={category.name === menuCategory}
+                        >
                           {category.name}
                         </option>
                       ))}
@@ -366,7 +381,8 @@ export default function page({ params }) {
                 <button
                   onClick={isEditing ? editMenuHandler : addMenuHandler}
                   type="submit"
-                  className="flex w-[50vh] m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                  className="flex w-[50vh] m-4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
                   {isEditing ? "Modifer le rubriques" : "Ajoutez un rubrique"}
                 </button>
               </form>

@@ -29,7 +29,7 @@ export default function Modal(props) {
     function removeDuplicatesAndGetCounts(arr) {
       const counts = arr?.reduce((acc, curr) => {
         const name = curr.name;
-        curr.prices.forEach((priceObj, index) => {
+        curr.prices?.forEach((priceObj, index) => {
           const price = priceObj.price;
           const variant = priceObj.variant;
           const key = `${name}-${price}-${variant}`; // Remove index from the key
@@ -53,14 +53,15 @@ export default function Modal(props) {
         product: counts[element],
       }));
 
-      // Assuming setcartProducts is a function to update your state
       setcartProducts(countPerElement);
 
       return countPerElement;
     }
 
-    orderTotal();
-    cartProducts && removeDuplicatesAndGetCounts(cartProducts);
+    if (cartProducts) {
+      removeDuplicatesAndGetCounts(cartProducts);
+      orderTotal();
+    }
   }, [cart, update]);
   const handleRemoveFromCart = (name) => {
     const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
@@ -99,13 +100,13 @@ export default function Modal(props) {
     }
   };
 
-
   return !cart ? null : (
     <div
       data-aos="fade-in"
       data-ease-in="ease-in-out"
       data-aos-duration="500"
-      className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none m-4">
+      className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none m-4"
+    >
       <div className="relative w-full max-w-full mx-auto my-6 bg-white shadow-lg rounded-xl p-6 h-[56vh] overflow-y-auto">
         {/* <div className="border-0   relative flex flex-col w-full bg-white outline-none focus:outline-none "> */}
         {orderStatus === "placed" ? (
@@ -194,7 +195,8 @@ export default function Modal(props) {
                     <tr key={index} className="aos-all">
                       <td
                         className="flex flex-col py-2 "
-                        style={{ wordBreak: "break-word" }}>
+                        style={{ wordBreak: "break-word" }}
+                      >
                         {product.product.name}{" "}
                         <small style={{ marginTop: "0px" }}>
                           {product.product.variant}
@@ -208,7 +210,8 @@ export default function Modal(props) {
                         className="py-2"
                         onClick={() =>
                           handleRemoveFromCart(product.product.name)
-                        }>
+                        }
+                      >
                         <RemoveCircleIcon />
                       </td>
                     </tr>
@@ -245,7 +248,8 @@ export default function Modal(props) {
           <button
             className="text-gray-400 background-transparent px-6 py-2 t outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button"
-            onClick={() => cartDispatch({ type: "TOGGLE_CART" })}>
+            onClick={() => cartDispatch({ type: "TOGGLE_CART" })}
+          >
             Go Back
           </button>
           {products.length !== 0 ? (
@@ -253,7 +257,8 @@ export default function Modal(props) {
               <button
                 onClick={handlePlaceOrder}
                 className="text-white bg-[#2f4a77]	 font-bold  px-6 py-3 rounded-xl shadow-xl outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button">
+                type="button"
+              >
                 place order
               </button>
             )
